@@ -49,6 +49,18 @@ losse wasbeurten); de sectie "Je eigen YES-account" op de site is een teaser zon
 Zodra het klant-portaal live is, gaat die teaser naar het account-oppervlak van de
 yescarwash-Business (hostgebaseerd, zie `web/src/lib/business-host.ts` in het platform).
 
+## Live staging (altijd-aan)
+
+Draait als Coolify-staging op **https://yescarwash-3w8d.pardodesign.app** (app-uuid
+`yr10qh72sgi10vi7dnfscrfh`, project "yesfit", zelfde server als yesfit-staging).
+**Redeploy na wijziging:** commit + push `main`, dan
+`GET {COOLIFY_BASE_URL}/api/v1/deploy?uuid=yr10qh72sgi10vi7dnfscrfh` met Bearer-token uit
+`c:\MiCasa\.env`, volgen tot finished, verifieren op HTTPS 200.
+
+De "Naar YESFIT"-knop wijst tijdens de review-fase naar de yesfit-staging
+(yesfit-8k4p.pardodesign.app); bij live-gang omzetten naar yesfit.nu. De repo is PUBLIEK
+gezet (alleen publieke marketingcontent) zodat Coolify zonder deploy key kan bouwen.
+
 ## Lokaal bekijken
 
 `python -m http.server 3021 --directory design` en open <http://localhost:3021>
