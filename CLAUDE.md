@@ -12,9 +12,16 @@ Een **statische one-page site** in `design/`:
 - `design/Dockerfile` = nginx die de map serveert (voor Coolify, zelfde patroon als yesfit)
 
 Huisstijl = zelfde DNA als de nieuwe YESFIT-site (warm zwart `#0a0908`, fonts
-Anton/Iceland/Inter/JetBrains Mono, tape-strips, seal-sticker, mono-labels) maar met de
-**aqua-merkkleur** `#2ee6cf` (familie van de YesCarwash-kleur `#12B3A6` in het
-yesfit-platform) en waterthema (gloed, waterboog, druppels, wax-shine op prijskaarten).
+Anton/Iceland/Inter/JetBrains Mono, tape-strips, seal-sticker, mono-labels) met de ECHTE
+YesCarwash-merkkleuren: **logo-blauw `#4380c1`** (gemeten uit `assets/logo-yescarwash.png`,
+gebruikt voor identiteit, prijzen en het waterthema) en **oranje `#fc5404`** (de
+Elementor-kit-primary van yescarwash.nl, gebruikt als actiekleur voor knoppen en de deal).
+
+## Assets (van yescarwash.nl, zelfde eigenaar)
+
+`assets/` bevat het echte logo (`logo-yescarwash.png` + `favicon-yescarwash.png`) en vier
+foto's van de site (2025-uploads: 22319 schuimpistool, 22322 handwash, 6979 velg,
+230056 spons/handwerk). Bron: yescarwash.nl wp-content/uploads, opgehaald 2026-07-10.
 
 ## Content-regels (KRITISCH)
 

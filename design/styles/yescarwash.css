@@ -11,10 +11,16 @@
   --text-primary: #fafaf9;
   --text-secondary: #8f9491;
   --text-tertiary: #565b58;
-  --accent: #2ee6cf;
-  --accent-hot: #6ff5e4;
-  --accent-glow: rgba(46, 230, 207, 0.4);
-  --accent-deep: #12b3a6;
+  /* Logo-blauw, gemeten uit logo-yescarwash.png. */
+  --accent: #4380c1;
+  --accent-hot: #6aa5e3;
+  --accent-glow: rgba(67, 128, 193, 0.4);
+  --accent-deep: #2e5f97;
+  /* Oranje actiekleur van yescarwash.nl (Elementor-kit primary #fc5404). */
+  --warm: #fc5404;
+  --warm-hot: #ff6f2a;
+  --warm-deep: #cf4300;
+  --warm-glow: rgba(252, 84, 4, 0.4);
   --border: rgba(255, 255, 255, 0.07);
   --border-strong: rgba(255, 255, 255, 0.16);
   --font-display: 'Anton', 'Bebas Neue', 'Impact', sans-serif;
@@ -47,7 +53,7 @@ a:focus-visible, button:focus-visible {
 /* ===== TAPE-STRIP (marquee) ===== */
 .tape-strip {
   background: var(--accent);
-  color: #032420;
+  color: #fff;
   padding: 8px 0;
   overflow: hidden;
   white-space: nowrap;
@@ -67,7 +73,7 @@ a:focus-visible, button:focus-visible {
   will-change: transform;
 }
 .tape-inner span { white-space: nowrap; display: inline-flex; align-items: center; gap: 28px; }
-.tape-inner span::after { content: '~'; color: rgba(0, 0, 0, 0.45); font-size: 14px; }
+.tape-inner span::after { content: '~'; color: rgba(255, 255, 255, 0.55); font-size: 14px; }
 @keyframes tapeRun {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-25%, 0, 0); }
@@ -109,13 +115,13 @@ a:focus-visible, button:focus-visible {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: var(--accent);
-  color: #032420 !important;
+  background: var(--warm);
+  color: #fff !important;
   padding: 11px 20px !important;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   transition: background 0.2s, transform 0.2s;
 }
-.nav-cta:hover { background: var(--accent-hot); transform: translateY(-1px); }
+.nav-cta:hover { background: var(--warm-hot); transform: translateY(-1px); }
 @media (max-width: 860px) { .nav-links a:not(.nav-cta) { display: none; } }
 
 /* ===== KNOPPEN ===== */
@@ -128,11 +134,11 @@ a:focus-visible, button:focus-visible {
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
 }
 .btn-vol {
-  background: var(--accent); color: #032420;
+  background: var(--warm); color: #fff;
   clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-  box-shadow: 0 10px 34px -12px var(--accent-glow);
+  box-shadow: 0 10px 34px -12px var(--warm-glow);
 }
-.btn-vol:hover { background: var(--accent-hot); transform: translateY(-2px); }
+.btn-vol:hover { background: var(--warm-hot); transform: translateY(-2px); }
 .btn-lijn {
   border: 1px solid var(--border-strong); color: var(--text-primary);
 }
@@ -144,8 +150,8 @@ a:focus-visible, button:focus-visible {
   padding: 96px 0 110px;
   overflow: hidden;
   background:
-    radial-gradient(720px 420px at 82% -10%, rgba(46, 230, 207, 0.16), transparent 65%),
-    radial-gradient(560px 420px at -8% 92%, rgba(18, 179, 166, 0.12), transparent 60%),
+    radial-gradient(720px 420px at 82% -10%, rgba(67, 128, 193, 0.16), transparent 65%),
+    radial-gradient(560px 420px at -8% 92%, rgba(46, 95, 151, 0.12), transparent 60%),
     var(--bg-base);
 }
 .hero-grid { position: relative; z-index: 2; }
@@ -189,17 +195,17 @@ a:focus-visible, button:focus-visible {
 .waterboog {
   position: absolute; right: -140px; top: -140px;
   width: 560px; height: 560px;
-  border: 1px solid rgba(46, 230, 207, 0.25);
+  border: 1px solid rgba(67, 128, 193, 0.25);
   border-radius: 50%;
 }
 .waterboog::before {
   content: ''; position: absolute; inset: 42px;
-  border: 1px dashed rgba(46, 230, 207, 0.18);
+  border: 1px dashed rgba(67, 128, 193, 0.18);
   border-radius: 50%;
 }
 .waterboog::after {
   content: ''; position: absolute; inset: 96px;
-  border: 1px solid rgba(46, 230, 207, 0.1);
+  border: 1px solid rgba(67, 128, 193, 0.1);
   border-radius: 50%;
 }
 .druppel {
@@ -277,13 +283,13 @@ a:focus-visible, button:focus-visible {
   overflow: hidden;
   transition: transform 0.25s, border-color 0.25s;
 }
-.prijs-kaart:hover { transform: translateY(-4px); border-color: rgba(46, 230, 207, 0.45); }
+.prijs-kaart:hover { transform: translateY(-4px); border-color: rgba(67, 128, 193, 0.45); }
 .prijs-kaart::after {
   /* wax-shine sweep */
   content: '';
   position: absolute; top: 0; bottom: 0; width: 60%;
   left: -80%;
-  background: linear-gradient(105deg, transparent, rgba(46, 230, 207, 0.09), transparent);
+  background: linear-gradient(105deg, transparent, rgba(67, 128, 193, 0.09), transparent);
   transition: left 0.7s ease;
   pointer-events: none;
 }
@@ -313,9 +319,9 @@ a:focus-visible, button:focus-visible {
 .deal {
   margin-top: 46px;
   position: relative;
-  border: 1px solid rgba(46, 230, 207, 0.5);
+  border: 1px solid rgba(252, 84, 4, 0.55);
   background:
-    radial-gradient(480px 260px at 90% 0%, rgba(46, 230, 207, 0.14), transparent 65%),
+    radial-gradient(480px 260px at 90% 0%, rgba(252, 84, 4, 0.14), transparent 65%),
     var(--bg-card);
   padding: 40px 36px;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px;
@@ -324,7 +330,7 @@ a:focus-visible, button:focus-visible {
 .deal-badge {
   position: absolute; top: 16px; right: -44px;
   transform: rotate(35deg);
-  background: var(--accent); color: #032420;
+  background: var(--warm); color: #fff;
   font-family: var(--font-mono); font-size: 10px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   padding: 7px 52px;
@@ -334,9 +340,9 @@ a:focus-visible, button:focus-visible {
 .deal .prijs {
   font-family: var(--font-display);
   font-size: clamp(56px, 7vw, 84px);
-  color: var(--accent);
+  color: var(--warm);
   line-height: 1;
-  text-shadow: 0 0 44px var(--accent-glow);
+  text-shadow: 0 0 44px var(--warm-glow);
 }
 
 /* ===== EXTRA'S ===== */
@@ -348,7 +354,7 @@ a:focus-visible, button:focus-visible {
   padding: 15px 18px;
   transition: border-color 0.2s;
 }
-.extra-rij:hover { border-color: rgba(46, 230, 207, 0.4); }
+.extra-rij:hover { border-color: rgba(67, 128, 193, 0.4); }
 .extra-rij .naam { font-size: 14px; }
 .extra-rij .naam small { display: block; color: var(--text-tertiary); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 2px; }
 .extra-rij .bedrag { font-family: var(--font-display); font-size: 21px; color: var(--accent); white-space: nowrap; }
@@ -428,4 +434,73 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   .druppel { animation: none; opacity: 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
+}
+
+/* ===== LOGO + FOTO'S (echte assets van yescarwash.nl) ===== */
+.brand { align-items: center; gap: 10px; }
+.brand img { height: 44px; width: auto; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 48px;
+  align-items: center;
+}
+.hero-foto {
+  position: relative;
+  border: 1px solid var(--border-strong);
+  transform: rotate(1.5deg);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.8), 0 0 60px -20px var(--accent-glow);
+}
+.hero-foto img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; }
+.hero-foto::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(200deg, rgba(67, 128, 193, 0.18), transparent 45%, rgba(6, 5, 4, 0.55));
+  pointer-events: none;
+}
+.hero-foto .foto-label {
+  position: absolute; left: 14px; bottom: 12px; z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-foto { transform: none; }
+  .hero-foto img { min-height: 260px; }
+}
+
+.foto-band { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 40px; }
+.foto-kaart {
+  position: relative;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.foto-kaart img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.foto-kaart:hover img { transform: scale(1.05); }
+.foto-kaart::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(6, 5, 4, 0.75));
+  pointer-events: none;
+}
+.foto-kaart figcaption {
+  position: absolute; left: 16px; bottom: 13px; z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: #fff;
+}
+.foto-kaart figcaption::before {
+  content: '';
+  display: inline-block;
+  width: 18px; height: 2px;
+  background: var(--accent);
+  margin-right: 10px;
+  vertical-align: middle;
 }
