@@ -10,7 +10,8 @@
   --bg-deeper: #060504;
   --text-primary: #fafaf9;
   --text-secondary: #8f9491;
-  --text-tertiary: #565b58;
+  /* Opgelicht van #565b58: dat haalde 2,6-2,9:1 op echte tekst (WCAG-fail) */
+  --text-tertiary: #838883;
   /* Logo-blauw, gemeten uit logo-yescarwash.png. */
   --accent: #4380c1;
   --accent-hot: #6aa5e3;
@@ -52,7 +53,8 @@ a:focus-visible, button:focus-visible {
 
 /* ===== TAPE-STRIP (marquee) ===== */
 .tape-strip {
-  background: var(--accent);
+  /* accent-deep i.p.v. accent: wit op #4380c1 was 4,12:1, op #2e5f97 is het 6,5:1 */
+  background: var(--accent-deep);
   color: #fff;
   padding: 8px 0;
   overflow: hidden;
@@ -116,7 +118,8 @@ a:focus-visible, button:focus-visible {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: var(--warm);
-  color: #fff !important;
+  /* Donkere inkt op oranje: wit haalde 3,28:1, dit haalt 6,07:1 */
+  color: #0a0908 !important;
   padding: 11px 20px !important;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   transition: background 0.2s, transform 0.2s;
@@ -134,7 +137,7 @@ a:focus-visible, button:focus-visible {
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
 }
 .btn-vol {
-  background: var(--warm); color: #fff;
+  background: var(--warm); color: #0a0908;
   clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   box-shadow: 0 10px 34px -12px var(--warm-glow);
 }
@@ -213,7 +216,9 @@ a:focus-visible, button:focus-visible {
   width: 10px; height: 10px;
   background: var(--accent);
   border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
+  /* 135deg: punt omhoog, ronde kant onder, zoals een druppel echt valt
+     (op -45deg stond de punt omlaag en leek hij omgekeerd te vallen) */
+  transform: rotate(135deg);
   opacity: 0.8;
   animation: druppelVal 5.5s ease-in infinite;
 }
@@ -330,7 +335,7 @@ a:focus-visible, button:focus-visible {
 .deal-badge {
   position: absolute; top: 16px; right: -44px;
   transform: rotate(35deg);
-  background: var(--warm); color: #fff;
+  background: var(--warm); color: #0a0908;
   font-family: var(--font-mono); font-size: 10px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   padding: 7px 52px;
@@ -357,7 +362,7 @@ a:focus-visible, button:focus-visible {
 .extra-rij:hover { border-color: rgba(67, 128, 193, 0.4); }
 .extra-rij .naam { font-size: 14px; }
 .extra-rij .naam small { display: block; color: var(--text-tertiary); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 2px; }
-.extra-rij .bedrag { font-family: var(--font-display); font-size: 21px; color: var(--accent); white-space: nowrap; }
+.extra-rij .bedrag { font-family: var(--font-display); font-size: 21px; color: var(--accent-hot); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* ===== INFO (openingstijden/contact) ===== */
 .info-grid { margin-top: 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -365,7 +370,8 @@ a:focus-visible, button:focus-visible {
 .info-blok h3 {
   font-family: var(--font-mono);
   font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase;
-  color: var(--accent);
+  /* accent-hot op kaart-achtergrond: #4380c1 haalde daar net geen 4,5:1 */
+  color: var(--accent-hot);
   margin-bottom: 18px;
 }
 .info-blok table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
@@ -373,7 +379,7 @@ a:focus-visible, button:focus-visible {
 .info-blok td:last-child { text-align: right; color: var(--text-primary); font-family: var(--font-mono); font-size: 13px; }
 .info-blok p { color: var(--text-secondary); font-size: 15px; }
 .info-blok p + p { margin-top: 8px; }
-.info-blok a.tel { color: var(--accent); font-family: var(--font-mono); }
+.info-blok a.tel { color: var(--accent-hot); font-family: var(--font-mono); }
 .info-noot { margin-top: 14px; font-size: 12.5px; color: var(--text-tertiary); font-family: var(--font-mono); }
 
 /* ===== CROSS-PROMO + ACCOUNT-TEASER ===== */
@@ -503,4 +509,142 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   background: var(--accent);
   margin-right: 10px;
   vertical-align: middle;
+}
+
+/* ===== BEAUTY PASS + MOBIEL MENU (2026-08-01) ===== */
+/* Ankers niet onder de sticky nav laten verdwijnen */
+html { scroll-padding-top: 84px; }
+
+/* Filmkorrel over de hele pagina: breekt de digitale vlakheid */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+/* Blauwdruk-raster in de hero: industrieel, past bij de werkplaats */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(70% 70% at 72% 24%, black, transparent 78%);
+  mask-image: radial-gradient(70% 70% at 72% 24%, black, transparent 78%);
+  pointer-events: none;
+}
+
+/* Hero-foto in een dubbele lijst (bezel), voelt als een fysiek paneel */
+.hero-foto { padding: 10px; background: rgba(255, 255, 255, 0.04); }
+.hero-foto::after { inset: 10px; }
+.hero-foto .foto-label { left: 24px; bottom: 22px; }
+
+/* Merk-hairline op de prijskaarten die meegroeit bij hover */
+.prijs-kaart::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 44px; height: 3px;
+  background: var(--accent);
+  transition: width 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 1;
+}
+.prijs-kaart:hover::before { width: 96px; }
+.prijs-kaart .prijs { font-variant-numeric: tabular-nums; }
+.sectie-kop h2 { text-wrap: balance; }
+.sectie-kop p { text-wrap: pretty; }
+
+/* Vanaf-label bij een kaart met meerdere prijzen */
+.prijs .vanaf {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+/* Cascade-entree: kaarten en rijen druppelen een voor een binnen */
+.reveal .prijs-kaart, .extras.reveal .extra-rij, .foto-band.reveal .foto-kaart {
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.32, 0.72, 0, 1), transform 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.reveal.zichtbaar .prijs-kaart, .extras.reveal.zichtbaar .extra-rij, .foto-band.reveal.zichtbaar .foto-kaart {
+  opacity: 1; transform: none;
+}
+.kaarten .prijs-kaart:nth-child(2), .extras .extra-rij:nth-child(2), .foto-band .foto-kaart:nth-child(2) { transition-delay: 0.07s; }
+.kaarten .prijs-kaart:nth-child(3), .extras .extra-rij:nth-child(3), .foto-band .foto-kaart:nth-child(3) { transition-delay: 0.14s; }
+.extras .extra-rij:nth-child(4) { transition-delay: 0.21s; }
+.extras .extra-rij:nth-child(5) { transition-delay: 0.28s; }
+.extras .extra-rij:nth-child(6) { transition-delay: 0.35s; }
+.extras .extra-rij:nth-child(7) { transition-delay: 0.42s; }
+.extras .extra-rij:nth-child(8) { transition-delay: 0.49s; }
+.extras .extra-rij:nth-child(9) { transition-delay: 0.56s; }
+.extras .extra-rij:nth-child(10) { transition-delay: 0.63s; }
+
+/* ===== HAMBURGER + VOLLEDIG MOBIEL MENU ===== */
+.nav-toggle {
+  display: none;
+  background: none; border: 0;
+  width: 44px; height: 44px;
+  cursor: pointer;
+  position: relative; z-index: 80;
+  padding: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text-primary);
+  margin: 5px auto;
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.25s;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobiel-menu {
+  position: fixed; inset: 0; z-index: 75;
+  background: rgba(6, 5, 4, 0.96);
+  backdrop-filter: blur(18px);
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s;
+}
+.mobiel-menu.open { opacity: 1; visibility: visible; }
+.mobiel-menu a {
+  font-family: var(--font-display);
+  font-size: 30px; text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--text-primary);
+  padding: 10px 18px;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1), transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), color 0.2s;
+}
+.mobiel-menu a:hover { color: var(--accent-hot); }
+.mobiel-menu.open a { opacity: 1; transform: none; }
+.mobiel-menu.open a:nth-child(2) { transition-delay: 0.05s; }
+.mobiel-menu.open a:nth-child(3) { transition-delay: 0.1s; }
+.mobiel-menu.open a:nth-child(4) { transition-delay: 0.15s; }
+.mobiel-menu.open a:nth-child(5) { transition-delay: 0.2s; }
+.mobiel-menu .menu-cta {
+  background: var(--warm); color: #0a0908;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 16px 34px;
+  margin-top: 18px;
+}
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .brand { font-size: 22px; }
+  .brand img { height: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobiel-menu, .mobiel-menu a, .nav-toggle span { transition: none; }
+  .reveal .prijs-kaart, .extras.reveal .extra-rij, .foto-band.reveal .foto-kaart { opacity: 1; transform: none; transition: none; }
+  .prijs-kaart::before { transition: none; }
 }

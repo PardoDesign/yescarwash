@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YES CARWASH Apeldoorn, hand- en machinewas, interieur en detailing</title>
   <meta name="description" content="YES CARWASH aan de Molenmakershoek 68 in Apeldoorn: basic carwash vanaf 15 euro, handwash, interieurpakketten tot occasion-ready en de combinatie deal. Ook bussen, campers en caravans.">
+  <meta property="og:title" content="YES CARWASH Apeldoorn, hand- en machinewas, interieur en detailing">
+  <meta property="og:description" content="Basic carwash vanaf 15 euro, handwash, interieurpakketten en de combinatie deal. Molenmakershoek 68, Apeldoorn.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta name="theme-color" content="#0a0908">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Iceland&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -32,8 +37,18 @@
         <a href="#contact">Openingstijden</a>
         <a class="nav-cta" href="https://maps.google.com/?q=Molenmakershoek+68,+7328+JK+Apeldoorn" target="_blank" rel="noopener">Route</a>
       </div>
+      <button class="nav-toggle" id="menuKnop" aria-label="Menu openen" aria-expanded="false" aria-controls="mobielMenu"><span></span><span></span><span></span></button>
     </div>
   </nav>
+
+  <!-- Mobiel menu (volledig scherm) -->
+  <div class="mobiel-menu" id="mobielMenu" aria-hidden="true">
+    <a href="#prijzen">Prijzen</a>
+    <a href="#groot">Bussen &amp; campers</a>
+    <a href="#extras">Extra's</a>
+    <a href="#contact">Openingstijden</a>
+    <a class="menu-cta" href="https://maps.google.com/?q=Molenmakershoek+68,+7328+JK+Apeldoorn" target="_blank" rel="noopener">Route</a>
+  </div>
 
   <!-- Hero -->
   <header class="hero">
@@ -194,7 +209,7 @@
           </article>
           <article class="prijs-kaart">
             <h3>Bus interieur</h3>
-            <p class="prijs"><sup>&euro;</sup>42</p>
+            <p class="prijs"><span class="vanaf">vanaf</span><sup>&euro;</sup>42</p>
             <ul><li>Quick clean &euro;42</li><li>Premium clean &euro;48</li><li>Combinatie deal &euro;66,50</li></ul>
           </article>
         </div>
@@ -314,6 +329,23 @@
       }
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach((el) => kijker.observe(el));
+
+    // Mobiel menu: openen/sluiten met hamburger, link-klik en Escape.
+    (function () {
+      const knop = document.getElementById('menuKnop');
+      const menu = document.getElementById('mobielMenu');
+      if (!knop || !menu) return;
+      function zetOpen(open) {
+        menu.classList.toggle('open', open);
+        knop.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+        knop.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+      knop.addEventListener('click', () => zetOpen(!menu.classList.contains('open')));
+      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => zetOpen(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') zetOpen(false); });
+    })();
   </script>
 </body>
 </html>
