@@ -543,16 +543,22 @@ body::after {
 .hero-foto::after { inset: 10px; }
 .hero-foto .foto-label { left: 24px; bottom: 22px; }
 
-/* Merk-hairline op de prijskaarten die meegroeit bij hover */
+/* Merk-hairline op de prijskaarten die meegroeit bij hover. Groeit via
+   scaleX (GPU) i.p.v. width: een width-animatie kost layout-werk per frame. */
 .prijs-kaart::before {
   content: '';
   position: absolute; top: 0; left: 0;
-  width: 44px; height: 3px;
+  width: 96px; height: 3px;
   background: var(--accent);
-  transition: width 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  transform: scaleX(0.458);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   z-index: 1;
 }
-.prijs-kaart:hover::before { width: 96px; }
+.prijs-kaart:hover::before { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .prijs-kaart::before { transition: none; }
+}
 .prijs-kaart .prijs { font-variant-numeric: tabular-nums; }
 .sectie-kop h2 { text-wrap: balance; }
 .sectie-kop p { text-wrap: pretty; }
