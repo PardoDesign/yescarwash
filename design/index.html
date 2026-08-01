@@ -66,9 +66,10 @@
         <p class="hero-label">Carwash &middot; Apeldoorn</p>
         <h1>
           <span class="rgl">Schoon.</span><br>
-          <span class="ghost">Strak.</span><br>
+          <span class="stil">Strak.</span><br>
           Klaar.
         </h1>
+        <span class="hero-streep" aria-hidden="true"></span>
         <p class="hero-sub">
           Van een snelle basic carwash tot handwash, interieur-detailing en de complete
           combinatie deal. Personenauto's, bussen, campers en caravans.
@@ -79,14 +80,38 @@
         </div>
         <p class="hero-coord"><b>Molenmakershoek 68</b> &middot; 7328 JK Apeldoorn &middot; 06&nbsp;15&nbsp;67&nbsp;79&nbsp;97</p>
       </div>
-      <figure class="hero-foto">
-        <img src="assets/22319.jpg" alt="Auto wordt ingeschuimd met een schuimpistool bij YES CARWASH" width="1000" height="667">
-        <figcaption class="foto-label">Snow foam &middot; exterieur</figcaption>
-        <div class="seal-sticker" aria-hidden="true">
-          <span>Yes Carwash</span>
-          <strong>APD</strong>
-          <span>Hand &amp; machine</span>
+
+      <!-- Wasvak: de auto ligt onder een laag stof en vuil. Vegen met de muis
+           (of vinger) haalt die laag weg. Zonder JavaScript zie je gewoon de
+           schone auto, dus de hero werkt altijd. -->
+      <figure class="wasvak" id="wasvak">
+        <div class="wasvak-beeld">
+          <img src="assets/auto-hero.jpg" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="844" fetchpriority="high">
+          <canvas class="wasvak-vuil" aria-hidden="true"></canvas>
+          <span class="wasvak-spons" aria-hidden="true">
+            <svg viewBox="0 0 52 34" width="52" height="34">
+              <defs>
+                <linearGradient id="sponsBoven" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#7fb3e4"/>
+                  <stop offset="1" stop-color="#3f78b6"/>
+                </linearGradient>
+              </defs>
+              <rect x="1" y="14" width="50" height="17" rx="7" fill="#2e5f97"/>
+              <rect x="1" y="3" width="50" height="16" rx="7" fill="url(#sponsBoven)"/>
+              <rect x="1" y="17" width="50" height="1.2" fill="rgba(255,255,255,0.5)"/>
+              <g fill="#24507f" opacity="0.4">
+                <circle cx="12" cy="9" r="1.7"/><circle cx="22" cy="7" r="1.2"/>
+                <circle cx="31" cy="11" r="1.5"/><circle cx="41" cy="8" r="1.1"/>
+                <circle cx="17" cy="13" r="1"/><circle cx="36" cy="14" r="1.2"/>
+              </g>
+            </svg>
+            <i class="bel bel-1"></i><i class="bel bel-2"></i><i class="bel bel-3"></i>
+          </span>
         </div>
+        <figcaption class="wasvak-voet">
+          <span class="wasvak-hint" id="wasvakHint">Veeg de auto schoon</span>
+          <span class="wasvak-meter" aria-hidden="true"><i id="wasvakMeter"></i></span>
+        </figcaption>
       </figure>
     </div>
   </header>
@@ -349,5 +374,6 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') zetOpen(false); });
     })();
   </script>
+  <script src="scripts/wasvak.js?v=20260801b" defer></script>
 </body>
 </html>

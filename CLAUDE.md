@@ -9,6 +9,13 @@ Een **statische one-page site** in `design/`:
 
 - `design/index.html` = de hele site (hero, prijzen, groot materieel, extra's, openingstijden/contact, YESFIT-cross-promo + account-teaser)
 - `design/styles/yescarwash.css` = designsysteem
+- `design/scripts/wasvak.js` = de interactieve hero: de auto ligt onder een laag stof
+  die je met de spons wegveegt. De vuillaag wordt uit de foto zelf afgeleid (helderheid
+  bepaalt waar carrosserie zit), dus er is geen tweede "vieze" foto nodig en er valt
+  nooit vuil naast de auto. Zonder JavaScript blijft de schone foto staan.
+- `design/nginx.conf` = cache-regels (HTML niet cachen, assets wel) + security-headers
+  en CSP. **Bij een CSS- of JS-wijziging de versie-query in `index.html` ophogen**,
+  anders blijft een bezoeker de oude bestanden zien.
 - `design/Dockerfile` = nginx die de map serveert (voor Coolify, zelfde patroon als yesfit)
 
 Huisstijl = zelfde DNA als de nieuwe YESFIT-site (warm zwart `#0a0908`, fonts
@@ -22,6 +29,14 @@ Elementor-kit-primary van yescarwash.nl, gebruikt als actiekleur voor knoppen en
 `assets/` bevat het echte logo (`logo-yescarwash.png` + `favicon-yescarwash.png`) en vier
 foto's van de site (2025-uploads: 22319 schuimpistool, 22322 handwash, 6979 velg,
 230056 spons/handwerk). Bron: yescarwash.nl wp-content/uploads, opgehaald 2026-07-10.
+
+`auto-hero.jpg` is de auto in de hero (het wasvak). Bron: Pexels-foto 261985
+("black luxury car photographed in studio"), opgehaald 2026-08-01, strak uitgesneden
+rond de auto (1500x844). **Licentie gecontroleerd bij de bron op 2026-08-01:** de
+Pexels-licentie staat gratis commercieel gebruik toe zonder naamsvermelding, met als
+grens dat je de foto niet ongewijzigd doorverkoopt of op een andere stockdienst zet.
+Wil de eigenaar liever een eigen auto in beeld, dan is dit bestand het enige dat
+vervangen hoeft te worden (zelfde verhouding, de vuillaag rekent zich vanzelf opnieuw uit).
 
 ## Content-regels (KRITISCH)
 
