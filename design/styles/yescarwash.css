@@ -211,22 +211,29 @@ a:focus-visible, button:focus-visible {
   border: 1px solid rgba(67, 128, 193, 0.1);
   border-radius: 50%;
 }
+/* Echte druppel-silhouet via clip-path: een vierkant met border-radius werd
+   altijd een kaartspeld, welke rotatie je ook koos. Deze vorm heeft de smalle
+   punt BOVEN en de bolle kant ONDER, zoals water dat naar beneden valt.
+   De rotatie is uit de transform gehaald, zodat transform vrij is voor de val
+   (translate + stretch, allebei GPU-werk). */
 .druppel {
   position: absolute;
-  width: 10px; height: 10px;
-  background: var(--accent);
-  border-radius: 50% 50% 50% 0;
-  /* 135deg: punt omhoog, ronde kant onder, zoals een druppel echt valt
-     (op -45deg stond de punt omlaag en leek hij omgekeerd te vallen) */
-  transform: rotate(135deg);
-  opacity: 0.8;
-  animation: druppelVal 5.5s ease-in infinite;
+  width: 13px; height: 19px;
+  background: linear-gradient(168deg, #9dc4e8 0%, var(--accent) 38%, #2c5f92 100%);
+  clip-path: path('M6.5 0 C6.5 0 13 8.2 13 12.6 A6.5 6.5 0 1 1 0 12.6 C0 8.2 6.5 0 6.5 0 Z');
+  filter: drop-shadow(0 2px 5px rgba(67, 128, 193, 0.4));
+  transform-origin: 50% 0;
+  opacity: 0;
+  animation: druppelVal 5.5s cubic-bezier(0.45, 0, 0.75, 0.4) infinite;
 }
 @keyframes druppelVal {
-  0% { translate: 0 -30px; opacity: 0; }
-  18% { opacity: 0.85; }
-  62% { opacity: 0.85; }
-  100% { translate: 0 46vh; opacity: 0; }
+  /* scaleY rekt de druppel op naarmate hij sneller valt, en de landing knijpt
+     hem plat. Transform-origin bovenaan houdt de punt op zijn spoor. */
+  0% { transform: translate3d(0, -40px, 0) scaleY(0.86); opacity: 0; }
+  14% { opacity: 0.9; }
+  70% { opacity: 0.9; }
+  94% { transform: translate3d(0, 44vh, 0) scaleY(1.3); opacity: 0.35; }
+  100% { transform: translate3d(0, 46vh, 0) scale(1.5, 0.35); opacity: 0; }
 }
 
 .seal-sticker {
