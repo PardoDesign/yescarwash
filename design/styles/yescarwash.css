@@ -42,6 +42,9 @@ body {
   overflow-x: hidden;
 }
 img { display: block; max-width: 100%; height: auto; }
+/* Het hidden-attribuut moet ALTIJD winnen van een display-regel, anders
+   blijft een verborgen blok (formulier, code, melding) toch in beeld. */
+[hidden] { display: none !important; }
 a { color: inherit; text-decoration: none; }
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
@@ -158,7 +161,7 @@ a:focus-visible, button:focus-visible {
      geheel met de rest van de pagina, op elk schermformaat. */
   background:
     radial-gradient(720px 420px at 82% -10%, rgba(67, 128, 193, 0.14), transparent 65%),
-    linear-gradient(180deg, var(--bg-base) 0%, rgba(10, 9, 8, 0.5) 14%, rgba(10, 9, 8, 0.44) 60%, var(--bg-base) 100%),
+    linear-gradient(180deg, var(--bg-base) 0%, rgba(10, 9, 8, 0.46) 16%, rgba(10, 9, 8, 0.4) 58%, var(--bg-base) 100%),
     url('../assets/wasstraat.jpg') center 38% / cover no-repeat,
     var(--bg-base);
 }
@@ -484,19 +487,18 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   pointer-events: none;
 }
 .wasvak-beeld {
-  /* De auto als eigen laag rechts, met het masker OP de foto-doos zelf: de
-     randen vervagen daardoor op elk schermformaat, ook ultrabreed, zodat er
-     nooit een rechthoek-naad in de achtergrond zichtbaar is. */
+  /* De auto is een VRIJSTAANDE afbeelding (alpha-kanaal), dus er is geen
+     fotorand meer om te verbergen: geen masker, geen kader, op geen enkel
+     schermformaat. Hij zweeft simpelweg voor de wasstraat. */
   position: absolute;
-  right: clamp(0px, 3vw, 140px);
-  top: 50%;
+  right: clamp(0px, 4vw, 190px);
+  top: 52%;
   transform: translateY(-50%);
-  height: min(88%, 680px);
-  max-width: 96vw;
+  height: min(76%, 560px);
+  max-width: 94vw;
   aspect-ratio: 1500 / 844;
   pointer-events: auto;
-  -webkit-mask-image: radial-gradient(72% 86% at 52% 50%, #000 52%, transparent 90%);
-  mask-image: radial-gradient(72% 86% at 52% 50%, #000 52%, transparent 90%);
+  filter: drop-shadow(0 26px 40px rgba(0, 0, 0, 0.6));
 }
 .wasvak-beeld img,
 .wasvak-vuil,
@@ -685,10 +687,6 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   color: var(--text-secondary);
 }
 .beloning-tekst strong { color: var(--warm-hot); }
-/* [hidden] expliciet laten winnen: de display-regel hieronder zou het
-   attribuut anders overstemmen en de code al voor het invullen tonen. */
-.beloning-code[hidden],
-.beloning-status[hidden] { display: none; }
 .beloning-code {
   margin-top: 14px;
   display: inline-block;

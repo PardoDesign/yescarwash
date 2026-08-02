@@ -9,10 +9,10 @@
    stempels in plaats van een herberekening van het hele beeld. Een tweede
    canvas tekent het schuim dat van de spons komt.
 
-   De vuillaag wordt AFGELEID uit de foto zelf: per pixel bepaalt de
-   helderheid hoeveel vuil er ligt. Zo valt er geen vuil naast de auto (de
-   studio-achtergrond is zwart) en hoeft er geen tweede foto te bestaan die
-   toch nooit precies zou uitlijnen.
+   De vuillaag wordt AFGELEID uit de foto zelf: de auto is een vrijstaande
+   afbeelding, dus het alpha-kanaal zegt waar carrosserie zit en de helderheid
+   hoeveel vuil daar ligt. Zo valt er nooit vuil naast de auto en hoeft er
+   geen tweede foto te bestaan die toch nooit precies zou uitlijnen.
 
    Zonder JavaScript, of als er iets misgaat, blijft simpelweg de schone foto
    staan. */
@@ -120,15 +120,22 @@
       var px = (i / 4) % w;
       var py = (i / 4 - px) / w;
 
-      // Helderheid bepaalt of hier carrosserie zit: de studio-achtergrond is
-      // vrijwel zwart, de auto vangt licht.
-      var lum = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
-      var dekking = (lum - 4) / 24;
-      if (dekking <= 0) {
+      // Het alpha-kanaal van de vrijstaande foto zegt of hier carrosserie zit;
+      // buiten de auto blijft de laag dus gegarandeerd leeg.
+      var opAuto = d[i + 3] / 255;
+      if (opAuto <= 0.02) {
         d[i + 3] = 0;
         continue;
       }
-      if (dekking > 1) dekking = 1;
+
+      // Helderheid bepaalt hoeveel vuil er zichtbaar is: op de belichte
+      // vlakken hecht het meeste stof, maar overal ligt een basislaag.
+      var lum = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+      var licht = lum / 52;
+      if (licht > 1) licht = 1;
+      // Lage basis, sterk oplopend met het licht: zo blijft de auto een
+      // herkenbare VIEZE auto in plaats van een egaal beige silhouet.
+      var dekking = (0.16 + 0.84 * licht) * opAuto;
 
       // Onderin ligt meer opspattend vuil dan op het dak.
       var laag = py / h;
@@ -141,10 +148,10 @@
       if (dekking > 1) dekking = 1;
 
       // Modderig grijsbruin, donkerder in de korrel: echt vies, niet stoffig.
-      d[i] = 126 - k * 30;
-      d[i + 1] = 111 - k * 30;
-      d[i + 2] = 90 - k * 26;
-      d[i + 3] = Math.round(dekking * 248);
+      d[i] = 118 - k * 34;
+      d[i + 1] = 105 - k * 32;
+      d[i + 2] = 88 - k * 28;
+      d[i + 3] = Math.round(dekking * 226);
     }
     ctx.putImageData(beeldData, 0, 0);
 
