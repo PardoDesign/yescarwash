@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" href="assets/favicon-yescarwash.png">
   <!-- Versie-query: nginx cachet de CSS lang, zonder deze bump blijft een
        bezoeker de oude stylesheet zien. Bij elke CSS-wijziging ophogen. -->
-  <link rel="stylesheet" href="styles/yescarwash.css?v=20260802b">
+  <link rel="stylesheet" href="styles/yescarwash.css?v=20260802c">
 </head>
 <body>
 
@@ -66,8 +66,14 @@
          laag stof en modder. Vegen met de muis (of vinger) poetst hem schoon,
          met schuim; helemaal schoon = 10% korting. Zonder JavaScript zie je
          gewoon de schone auto, dus de hero werkt altijd. -->
+    <div class="wrap hero-kop">
+      <p class="hero-label">Carwash &middot; Apeldoorn</p>
+      <h1><span class="stil">Vuil eraf.</span> <span class="rgl">Glans</span> erop.</h1>
+      <span class="hero-streep" aria-hidden="true"></span>
+    </div>
+
     <figure class="wasvak" id="wasvak">
-      <div class="wasvak-beeld" data-vies="assets/auto-vies.webp?v=20260802b">
+      <div class="wasvak-beeld" data-vies="assets/auto-vies.webp?v=20260802c">
         <img src="assets/auto-schoon.webp" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="660" fetchpriority="high">
         <canvas class="wasvak-vuil" aria-hidden="true"></canvas>
         <canvas class="wasvak-schuim" aria-hidden="true"></canvas>
@@ -91,6 +97,19 @@
           <i class="bel bel-1"></i><i class="bel bel-2"></i><i class="bel bel-3"></i>
         </span>
       </div>
+      <div class="wasvak-oproep" id="wasvakOproep">
+        <span class="oproep-spons" aria-hidden="true">
+          <svg viewBox="0 0 52 34" width="34" height="22">
+            <rect x="1" y="14" width="50" height="17" rx="7" fill="#2e5f97"/>
+            <rect x="1" y="3" width="50" height="16" rx="7" fill="#5f9ad4"/>
+            <rect x="1" y="17" width="50" height="1.2" fill="rgba(255,255,255,0.5)"/>
+          </svg>
+        </span>
+        <span class="oproep-tekst">
+          <strong>Veeg de auto schoon</strong>
+          <span>en krijg <b>10% korting</b></span>
+        </span>
+      </div>
       <figcaption class="wasvak-voet">
         <span class="wasvak-hint" id="wasvakHint">Veeg de auto schoon</span>
         <span class="wasvak-meter" aria-hidden="true"><i id="wasvakMeter"></i></span>
@@ -111,22 +130,18 @@
         <p class="beloning-status" hidden></p>
       </div>
     </figure>
+    <script>document.getElementById('wasvak').dataset.laden = '1';</script>
 
-    <div class="wrap hero-grid">
-      <div class="hero-tekst">
-        <p class="hero-label">Carwash &middot; Apeldoorn</p>
-        <h1><span class="stil">Vuil eraf.</span> <span class="rgl">Glans</span> erop.</h1>
-        <span class="hero-streep" aria-hidden="true"></span>
-        <p class="hero-sub">
-          Van een snelle basic carwash tot handwash, interieur-detailing en de complete
-          combinatie deal. Personenauto's, bussen, campers en caravans.
-        </p>
-        <div class="hero-cta">
-          <a href="#prijzen" class="btn btn-vol">Bekijk de prijzen</a>
-          <a href="https://wa.me/31615677997" target="_blank" rel="noopener" class="btn btn-lijn">App ons</a>
-        </div>
-        <p class="hero-coord"><b>Molenmakershoek 68</b> &middot; 7328 JK Apeldoorn &middot; 06&nbsp;15&nbsp;67&nbsp;79&nbsp;97</p>
+    <div class="wrap hero-rest">
+      <p class="hero-sub">
+        Van een snelle basic carwash tot handwash, interieur-detailing en de complete
+        combinatie deal. Personenauto's, bussen, campers en caravans.
+      </p>
+      <div class="hero-cta">
+        <a href="#prijzen" class="btn btn-vol">Bekijk de prijzen</a>
+        <a href="https://wa.me/31615677997" target="_blank" rel="noopener" class="btn btn-lijn">App ons</a>
       </div>
+      <p class="hero-coord"><b>Molenmakershoek 68</b> &middot; 7328 JK Apeldoorn &middot; 06&nbsp;15&nbsp;67&nbsp;79&nbsp;97</p>
     </div>
   </header>
 
@@ -388,6 +403,6 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') zetOpen(false); });
     })();
   </script>
-  <script src="scripts/wasvak.js?v=20260802b" defer></script>
+  <script src="scripts/wasvak.js?v=20260802c" defer></script>
 </body>
 </html>

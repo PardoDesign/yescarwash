@@ -45,6 +45,7 @@
   var kwastStraal = 0;
   var vorige = null;
   var meetTimer = 0;
+  var demoLoopt = false;
 
   var kaderNu = null;
 
@@ -97,6 +98,9 @@
     kwastStraal = Math.max(30, Math.round(w * 0.046));
     kwast = maakKwast(kwastStraal);
     opgebouwd = true;
+    // Nu pas de schone auto eronder vrijgeven: hij is vanaf hier toch bedekt,
+    // dus de bezoeker ziet hem nooit onbedekt oplichten.
+    vak.removeAttribute('data-laden');
     return true;
   }
 
@@ -176,6 +180,7 @@
     }
     stempel(x, y);
     spawnSchuim(x, y, 3);
+    if (!demoLoopt) vak.dataset.bezig = '1';
     vorige = { x: x, y: y };
     planMeting();
   }
@@ -381,13 +386,17 @@
     var k = kaderNu;
     var start = performance.now();
     var duur = 1500;
+    demoLoopt = true;
     function stap(nu) {
       var t = Math.min((nu - start) / duur, 1);
       var x = k.x + k.b * (0.18 + t * 0.6);
       var y = k.y + k.h * (0.52 + Math.sin(t * Math.PI * 1.6) * 0.16);
       veeg(x, y);
       if (t < 1) requestAnimationFrame(stap);
-      else vorige = null;
+      else {
+        vorige = null;
+        demoLoopt = false;
+      }
     }
     requestAnimationFrame(stap);
   }
@@ -423,9 +432,16 @@
     }, { once: true });
     viesBeeld.addEventListener('error', function () {
       // Geen vieze laag = gewoon een schone auto in de hero, geen kapot vak.
+      vak.removeAttribute('data-laden');
       if (hint) hint.hidden = true;
+      var oproep = document.getElementById('wasvakOproep');
+      if (oproep) oproep.hidden = true;
     }, { once: true });
     viesBeeld.src = viesPad;
+    // Vangnet: wat er ook gebeurt, na 4 seconden staat de auto in beeld.
+    window.setTimeout(function () { vak.removeAttribute('data-laden'); }, 4000);
+  } else {
+    vak.removeAttribute('data-laden');
   }
 
   // Bij het draaien van een telefoon of het verslepen van een venster klopt de

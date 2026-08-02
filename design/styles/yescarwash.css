@@ -97,10 +97,11 @@ a:focus-visible, button:focus-visible {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .brand {
-  font-family: var(--font-brand);
-  font-size: 27px;
-  letter-spacing: 0.04em;
-  display: inline-flex; align-items: baseline; gap: 2px;
+  font-family: var(--font-display);
+  font-size: 25px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 3px;
 }
 .brand em { font-style: normal; color: var(--accent); }
 .nav-links { display: flex; align-items: center; gap: 4px; }
@@ -161,7 +162,7 @@ a:focus-visible, button:focus-visible {
      geheel met de rest van de pagina, op elk schermformaat. */
   background:
     radial-gradient(720px 420px at 82% -10%, rgba(67, 128, 193, 0.14), transparent 65%),
-    linear-gradient(180deg, var(--bg-base) 0%, rgba(10, 9, 8, 0.46) 16%, rgba(10, 9, 8, 0.4) 58%, var(--bg-base) 100%),
+    linear-gradient(180deg, var(--bg-base) 0%, rgba(10, 9, 8, 0.44) 16%, rgba(10, 9, 8, 0.4) 58%, var(--bg-base) 100%),
     url('../assets/wasstraat.jpg') center 38% / cover no-repeat,
     var(--bg-base);
 }
@@ -171,15 +172,9 @@ a:focus-visible, button:focus-visible {
   content: '';
   position: absolute; inset: 0; z-index: 2;
   pointer-events: none;
-  background: linear-gradient(90deg, var(--bg-base) 30%, rgba(10, 9, 8, 0.55) 48%, transparent 64%);
+  background: linear-gradient(90deg, var(--bg-base) 26%, rgba(10, 9, 8, 0.72) 46%, rgba(10, 9, 8, 0.3) 62%, transparent 76%);
 }
-.hero-grid {
-  position: relative;
-  z-index: 3;
-  /* De laag zweeft over de auto heen; zonder dit vangt hij de muis af en
-     valt er niets meer te poetsen. Alleen de tekstkolom vangt de muis. */
-  pointer-events: none;
-}
+
 .hero-label {
   font-family: var(--font-mono);
   font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase;
@@ -463,15 +458,18 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
 .brand { align-items: center; gap: 10px; }
 .brand img { height: 44px; width: auto; }
 
-.hero-tekst {
+/* De tekstblokken zweven over de auto; ze laten de muis door zodat je ook
+   achter de tekst kunt poetsen, alleen de klikbare dingen vangen hem. */
+.hero-kop,
+.hero-rest {
   position: relative;
-  max-width: 560px;
-  /* De tekstlaag zweeft over de auto; de KOLOM laat de muis door zodat je ook
-     achter de tekst kunt poetsen, alleen de klikbare dingen vangen hem. */
+  z-index: 3;
   pointer-events: none;
 }
-.hero-tekst a,
-.hero-tekst .btn { pointer-events: auto; }
+.hero-kop > *,
+.hero-rest > * { max-width: 540px; }
+.hero-kop a, .hero-rest a, .hero-rest .btn { pointer-events: auto; }
+.hero-rest { margin-top: 4px; }
 
 /* ===== WASVAK (de auto die je zelf schoonveegt) =====
    De auto staat als losse laag in de hero: de studiofoto heeft dezelfde
@@ -480,6 +478,8 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
    dikke laag stof en modder die je met de spons wegveegt; een tweede canvas
    tekent het schuim. Zonder JavaScript blijft alleen de schone auto over. */
 .wasvak {
+  --auto-breed: min(64vw, 1120px);
+  --auto-rechts: clamp(0px, 2vw, 90px);
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -491,10 +491,10 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
      fotorand meer om te verbergen: geen masker, geen kader, op geen enkel
      schermformaat. Hij zweeft simpelweg voor de wasstraat. */
   position: absolute;
-  right: clamp(0px, 2vw, 90px);
+  right: var(--auto-rechts);
   top: 52%;
   transform: translateY(-50%);
-  width: min(64vw, 1120px);
+  width: var(--auto-breed);
   aspect-ratio: 1500 / 660;
   pointer-events: auto;
   filter: drop-shadow(0 30px 46px rgba(0, 0, 0, 0.62));
@@ -515,6 +515,11 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1);
   touch-action: pan-y;
 }
+/* Anti-flits: zolang de modderlaag nog niet klaarstaat blijft de schone auto
+   onzichtbaar, anders zie je bij het openen eerst even de schone wagen. Het
+   attribuut wordt door een regeltje in de HTML gezet en door het script weer
+   weggehaald, dus zonder JavaScript is de auto gewoon zichtbaar. */
+.wasvak[data-laden="1"] .wasvak-beeld img { visibility: hidden; }
 .wasvak-schuim { pointer-events: none; }
 .wasvak[data-klaar="1"] .wasvak-vuil { opacity: 0; pointer-events: none; }
 .wasvak[data-klaar="1"] .wasvak-spons { opacity: 0; }
@@ -551,8 +556,60 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   100% { transform: translate3d(-6px, -34px, 0) scale(1); opacity: 0; }
 }
 
+/* Oproep: wat je moet doen EN wat je ervoor krijgt, groot genoeg om te zien.
+   Verdwijnt zodra je begint te poetsen; dan neemt de meter het over. */
+.wasvak-oproep {
+  position: absolute;
+  left: auto;
+  right: calc(var(--auto-rechts) + var(--auto-breed) / 2);
+  bottom: 11%;
+  z-index: 4;
+  transform: translateX(50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px 14px 16px;
+  background: rgba(8, 7, 6, 0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(252, 84, 4, 0.5);
+  clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+.wasvak[data-bezig="1"] .wasvak-oproep,
+.wasvak[data-klaar="1"] .wasvak-oproep,
+.wasvak[data-laden="1"] .wasvak-oproep {
+  opacity: 0;
+  transform: translateX(50%) translateY(10px);
+}
+.oproep-spons {
+  display: flex;
+  animation: sponsWenk 2.6s ease-in-out infinite;
+}
+@keyframes sponsWenk {
+  0%, 100% { transform: translate3d(-5px, 0, 0) rotate(-7deg); }
+  50% { transform: translate3d(5px, -2px, 0) rotate(7deg); }
+}
+.oproep-tekst { display: flex; flex-direction: column; gap: 2px; line-height: 1.3; }
+.oproep-tekst strong {
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.oproep-tekst > span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.oproep-tekst b { color: var(--warm-hot); }
+
 /* Voet: wat je moet doen en hoe ver je bent, klein en stil onder de auto. */
 .wasvak-voet {
+  opacity: 0;
+  transition: opacity 0.4s ease;
   position: absolute;
   right: 4%;
   bottom: 20px;
@@ -570,6 +627,8 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   white-space: nowrap;
   transition: color 0.4s ease;
 }
+.wasvak[data-bezig="1"] .wasvak-voet,
+.wasvak[data-klaar="1"] .wasvak-voet { opacity: 1; }
 .wasvak[data-klaar="1"] .wasvak-hint { color: var(--accent); }
 .wasvak-meter {
   flex: 1;
@@ -698,16 +757,28 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
 .beloning-code b { color: var(--text-primary); }
 
 @media (max-width: 900px) {
-  /* Op smal komt de auto ONDER de tekst, als gewoon blok. */
-  .hero { display: flex; flex-direction: column; min-height: 0; }
+  /* Op smal staat alles onder elkaar: kop, dan meteen de auto met de oproep
+     (dat is de attractie, die moet je zien zonder te scrollen), dan de rest. */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 40px 0 56px;
+  }
   .hero::before { display: none; }
-  .hero-grid { order: 1; }
+  .hero-kop, .hero-rest { max-width: none; }
+  .hero h1 { margin-top: 16px; font-size: clamp(30px, 8.6vw, 46px); }
+  .hero-streep { margin-top: 20px; }
+  .hero-sub { margin-top: 20px; font-size: 15.5px; line-height: 1.65; }
+  .hero-cta { margin-top: 24px; gap: 10px; }
+  .hero-cta .btn { flex: 1 1 auto; justify-content: center; padding: 14px 18px; font-size: 12px; }
+  .hero-coord { margin-top: 26px; font-size: 10px; letter-spacing: 0.16em; }
+
   .wasvak {
     position: relative;
     inset: auto;
-    order: 2;
     width: 100%;
-    margin-top: 4px;
+    margin: 18px 0 6px;
   }
   .wasvak-beeld {
     position: relative;
@@ -719,20 +790,44 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
     width: 100%;
     max-width: none;
     aspect-ratio: 1500 / 660;
+    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.55));
   }
   .wasvak-voet {
     position: static;
     width: auto;
-    margin: 8px 24px 0;
+    margin: 10px 24px 0;
   }
+  /* Op smal staat de oproep ONDER de auto als balk: hij dekt het beeld niet
+     af en de tekst hoeft niet af te breken. */
+  .wasvak-oproep {
+    position: static;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    margin: 14px 24px 0;
+    padding: 12px 16px;
+    justify-content: center;
+  }
+  .wasvak[data-bezig="1"] .wasvak-oproep,
+  .wasvak[data-klaar="1"] .wasvak-oproep,
+  .wasvak[data-laden="1"] .wasvak-oproep {
+    transform: translateY(8px);
+  }
+  .oproep-tekst strong { font-size: 17px; }
+  .oproep-tekst > span { font-size: 10px; letter-spacing: 0.1em; }
   .wasvak-beloning {
     left: 50%;
     right: auto;
     top: 50%;
+    width: min(320px, 90%);
+    padding: 20px 20px 18px;
     transform: translate(-50%, -50%) scale(0.92);
   }
   .wasvak-beloning.toon { transform: translate(-50%, -50%) scale(1); }
+  .beloning-kop { font-size: 21px; }
+  .beloning-tekst { font-size: 13px; }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .wasvak-spons .bel { animation: none; opacity: 0; }
   .wasvak-vuil, .wasvak-meter i, .wasvak-beloning { transition: none; }
