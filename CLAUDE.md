@@ -9,13 +9,13 @@ Een **statische one-page site** in `design/`:
 
 - `design/index.html` = de hele site (hero, prijzen, groot materieel, extra's, openingstijden/contact, YESFIT-cross-promo + account-teaser)
 - `design/styles/yescarwash.css` = designsysteem
-- `design/scripts/wasvak.js` = de interactieve hero: de auto ligt onder een laag stof
-  die je met de spons wegveegt. De vuillaag wordt uit de foto zelf afgeleid (helderheid
-  bepaalt waar carrosserie zit), dus er is geen tweede "vieze" foto nodig en er valt
-  nooit vuil naast de auto. Zonder JavaScript blijft de schone foto staan.
-- `design/nginx.conf` = cache-regels (HTML niet cachen, assets wel) + security-headers
-  en CSP. **Bij een CSS- of JS-wijziging de versie-query in `index.html` ophogen**,
-  anders blijft een bezoeker de oude bestanden zien.
+- `design/scripts/wasvak.js` = de interactieve hero: de vieze auto ligt op canvas over de
+  schone en wordt met `destination-out` cumulatief weggeveegd, met een tweede canvas voor
+  het schuim. Zonder JavaScript blijft de schone foto staan.
+- `design/nginx.conf` = cache-regels + security-headers en CSP. **CSS en JS staan op
+  `no-cache`** (revalideren via ETag), afbeeldingen 30 dagen. De versie-query in
+  `index.html` mag je ophogen, maar de site is er niet meer van afhankelijk: een vergeten
+  bump leverde eerder nieuwe HTML met oude CSS op, en dus een gebroken pagina.
 - `design/Dockerfile` = nginx die de map serveert (voor Coolify, zelfde patroon als yesfit)
 
 Huisstijl = zelfde DNA als de nieuwe YESFIT-site (warm zwart `#0a0908`, fonts
