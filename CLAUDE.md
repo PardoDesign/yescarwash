@@ -19,10 +19,16 @@ Een **statische one-page site** in `design/`:
 - `design/Dockerfile` = nginx die de map serveert (voor Coolify, zelfde patroon als yesfit)
 
 Huisstijl = zelfde DNA als de nieuwe YESFIT-site (warm zwart `#0a0908`, fonts
-Anton/Iceland/Inter/JetBrains Mono, tape-strips, seal-sticker, mono-labels) met de ECHTE
-YesCarwash-merkkleuren: **logo-blauw `#4380c1`** (gemeten uit `assets/logo-yescarwash.png`,
-gebruikt voor identiteit, prijzen en het waterthema) en **oranje `#fc5404`** (de
-Elementor-kit-primary van yescarwash.nl, gebruikt als actiekleur voor knoppen en de deal).
+Anton/Inter/JetBrains Mono, tape-strips, mono-labels) met de ECHTE YesCarwash-kleur:
+**logo-blauw `#4380c1`** (gemeten uit `assets/logo-yescarwash.png`), met `#6aa5e3` als
+lichtere actiekleur voor knoppen.
+
+**GEEN ORANJE (eigenaar-eis 2026-08-02, geverifieerd bij de bron).** Eerdere versies
+gebruikten `#fc5404` als actiekleur "omdat dat de Elementor-kit-primary van
+yescarwash.nl is". Dat klopt technisch maar is misleidend: die kleur staat alleen in de
+kit-definitie, in het zichtbare ontwerp van yescarwash.nl is ALLES blauw (`#417ec1`,
+gecontroleerd 2026-08-02). Oranje hoort dus niet bij dit merk; gebruik uitsluitend de
+blauwtinten.
 
 ## Assets (van yescarwash.nl, zelfde eigenaar)
 
@@ -68,7 +74,9 @@ Alle teksten en prijzen komen **letterlijk van yescarwash.nl** (prijslijst gever
 - Contact: 06 15 67 79 97, info@yescarwash.nl.
 - **Uitzondering op "niks verzinnen" (verzoek eigenaar 2026-08-02):** wie in de hero de
   auto helemaal schoonpoetst krijgt de beloning-kaart: e-mailadres achterlaten =
-  **10% korting op de volgende wasbeurt, code SPONS10** (`wasvak-beloning` in
+  **korting op de volgende wasbeurt, code SPONS10**. Het PERCENTAGE staat bewust niet in
+  de teksten (eigenaar-eis): overal alleen "korting", zodat de hoogte vrij blijft tot de
+  balie hem vastlegt. (`wasvak-beloning` in
   index.html). Het adres gaat naar de mailinglijst van het yesfit-platform via
   `POST /api/acties/inschrijven` (data-api op het formulier; beheer onder
   `/beheer/mailing`). Zolang het platform alleen lokaal draait toont de site bij een

@@ -17,11 +17,14 @@
   --accent-hot: #6aa5e3;
   --accent-glow: rgba(67, 128, 193, 0.4);
   --accent-deep: #2e5f97;
-  /* Oranje actiekleur van yescarwash.nl (Elementor-kit primary #fc5404). */
-  --warm: #fc5404;
-  --warm-hot: #ff6f2a;
-  --warm-deep: #cf4300;
-  --warm-glow: rgba(252, 84, 4, 0.4);
+  /* Actiekleur. GEEN oranje: #fc5404 staat op yescarwash.nl alleen als
+     kleurdefinitie in de Elementor-kit, in het zichtbare ontwerp gebruiken ze
+     overal blauw (#417ec1). Dit is een heldere variant daarvan; donkere inkt
+     erop haalt 7,7:1, ruim boven de norm. */
+  --actie: #6aa5e3;
+  --actie-hot: #8cc0f0;
+  --actie-deep: #2e5f97;
+  --actie-glow: rgba(106, 165, 227, 0.35);
   --border: rgba(255, 255, 255, 0.07);
   --border-strong: rgba(255, 255, 255, 0.16);
   --font-display: 'Anton', 'Bebas Neue', 'Impact', sans-serif;
@@ -121,14 +124,14 @@ a:focus-visible, button:focus-visible {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: var(--warm);
-  /* Donkere inkt op oranje: wit haalde 3,28:1, dit haalt 6,07:1 */
+  background: var(--actie);
+  /* Donkere inkt op het heldere blauw: 7,7:1 */
   color: #0a0908 !important;
   padding: 11px 20px !important;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   transition: background 0.2s, transform 0.2s;
 }
-.nav-cta:hover { background: var(--warm-hot); transform: translateY(-1px); }
+.nav-cta:hover { background: var(--actie-hot); transform: translateY(-1px); }
 @media (max-width: 860px) { .nav-links a:not(.nav-cta) { display: none; } }
 
 /* ===== KNOPPEN ===== */
@@ -141,11 +144,11 @@ a:focus-visible, button:focus-visible {
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
 }
 .btn-vol {
-  background: var(--warm); color: #0a0908;
+  background: var(--actie); color: #0a0908;
   clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-  box-shadow: 0 10px 34px -12px var(--warm-glow);
+  box-shadow: 0 10px 34px -12px var(--actie-glow);
 }
-.btn-vol:hover { background: var(--warm-hot); transform: translateY(-2px); }
+.btn-vol:hover { background: var(--actie-hot); transform: translateY(-2px); }
 .btn-lijn {
   border: 1px solid var(--border-strong); color: var(--text-primary);
 }
@@ -336,9 +339,9 @@ a:focus-visible, button:focus-visible {
 .deal {
   margin-top: 46px;
   position: relative;
-  border: 1px solid rgba(252, 84, 4, 0.55);
+  border: 1px solid color-mix(in srgb, var(--actie) 55%, transparent);
   background:
-    radial-gradient(480px 260px at 90% 0%, rgba(252, 84, 4, 0.14), transparent 65%),
+    radial-gradient(480px 260px at 90% 0%, color-mix(in srgb, var(--actie) 16%, transparent), transparent 65%),
     var(--bg-card);
   padding: 40px 36px;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px;
@@ -347,7 +350,7 @@ a:focus-visible, button:focus-visible {
 .deal-badge {
   position: absolute; top: 16px; right: -44px;
   transform: rotate(35deg);
-  background: var(--warm); color: #0a0908;
+  background: var(--actie); color: #0a0908;
   font-family: var(--font-mono); font-size: 10px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   padding: 7px 52px;
@@ -357,9 +360,9 @@ a:focus-visible, button:focus-visible {
 .deal .prijs {
   font-family: var(--font-display);
   font-size: clamp(56px, 7vw, 84px);
-  color: var(--warm);
+  color: var(--actie);
   line-height: 1;
-  text-shadow: 0 0 44px var(--warm-glow);
+  text-shadow: 0 0 44px var(--actie-glow);
 }
 
 /* ===== EXTRA'S ===== */
@@ -460,16 +463,15 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
 
 /* De tekstblokken zweven over de auto; ze laten de muis door zodat je ook
    achter de tekst kunt poetsen, alleen de klikbare dingen vangen hem. */
-.hero-kop,
-.hero-rest {
+/* Het tekstblok zweeft over de auto; het laat de muis door zodat je ook
+   achter de tekst kunt poetsen, alleen de klikbare dingen vangen hem. */
+.hero-tekst {
   position: relative;
   z-index: 3;
   pointer-events: none;
 }
-.hero-kop > *,
-.hero-rest > * { max-width: 540px; }
-.hero-kop a, .hero-rest a, .hero-rest .btn { pointer-events: auto; }
-.hero-rest { margin-top: 4px; }
+.hero-tekst > * { max-width: 540px; }
+.hero-tekst a, .hero-tekst .btn { pointer-events: auto; }
 
 /* ===== WASVAK (de auto die je zelf schoonveegt) =====
    De auto staat als losse laag in de hero: de studiofoto heeft dezelfde
@@ -571,7 +573,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   padding: 14px 22px 14px 16px;
   background: rgba(8, 7, 6, 0.82);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(252, 84, 4, 0.5);
+  border: 1px solid color-mix(in srgb, var(--actie) 55%, transparent);
   clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
   pointer-events: none;
@@ -604,7 +606,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   text-transform: uppercase;
   color: var(--text-secondary);
 }
-.oproep-tekst b { color: var(--warm-hot); }
+.oproep-tekst b { color: var(--actie-hot); }
 
 /* Voet: wat je moet doen en hoe ver je bent, klein en stil onder de auto. */
 .wasvak-voet {
@@ -704,12 +706,12 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   padding: 13px 18px;
   border: 0;
   cursor: pointer;
-  background: var(--warm);
+  background: var(--actie);
   color: #0a0908;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   transition: background 0.2s, transform 0.2s;
 }
-.beloning-knop:hover { background: var(--warm-hot); transform: translateY(-1px); }
+.beloning-knop:hover { background: var(--actie-hot); transform: translateY(-1px); }
 .beloning-knop:disabled { opacity: 0.6; cursor: default; transform: none; }
 .beloning-privacy {
   margin-top: 10px;
@@ -732,6 +734,26 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   white-space: nowrap;
   border: 0;
 }
+.beloning-sluit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.beloning-sluit:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-strong);
+}
 .beloning-kop {
   font-family: var(--font-display);
   font-size: 25px;
@@ -744,7 +766,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   line-height: 1.6;
   color: var(--text-secondary);
 }
-.beloning-tekst strong { color: var(--warm-hot); }
+.beloning-tekst strong { color: var(--actie-hot); }
 .beloning-code {
   margin-top: 14px;
   display: inline-block;
@@ -760,13 +782,11 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   /* Op smal staat alles onder elkaar: kop, dan meteen de auto met de oproep
      (dat is de attractie, die moet je zien zonder te scrollen), dan de rest. */
   .hero {
-    display: flex;
-    flex-direction: column;
     min-height: 0;
-    padding: 40px 0 56px;
+    padding: 40px 0 48px;
   }
   .hero::before { display: none; }
-  .hero-kop, .hero-rest { max-width: none; }
+  .hero-tekst > * { max-width: none; }
   .hero h1 { margin-top: 16px; font-size: clamp(30px, 8.6vw, 46px); }
   .hero-streep { margin-top: 20px; }
   .hero-sub { margin-top: 20px; font-size: 15.5px; line-height: 1.65; }
@@ -778,7 +798,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
     position: relative;
     inset: auto;
     width: 100%;
-    margin: 18px 0 6px;
+    margin: 26px 0 0;
   }
   .wasvak-beeld {
     position: relative;
@@ -973,7 +993,7 @@ body::after {
 .mobiel-menu.open a:nth-child(4) { transition-delay: 0.15s; }
 .mobiel-menu.open a:nth-child(5) { transition-delay: 0.2s; }
 .mobiel-menu .menu-cta {
-  background: var(--warm); color: #0a0908;
+  background: var(--actie); color: #0a0908;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   font-family: var(--font-mono); font-size: 13px; font-weight: 700;
   letter-spacing: 0.14em;

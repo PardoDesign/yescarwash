@@ -1,5 +1,8 @@
 /* Wasvak: de auto in de hero ligt onder een dikke laag stof en modder die je
-   met de spons wegveegt. Helemaal schoon = 10% korting (de beloning-kaart).
+   met de spons wegveegt. Helemaal schoon = korting (de beloning-kaart).
+
+   De actie is eenmalig: wie de code al heeft gehaald staat al op de lijst, dus
+   dan blijft de auto gewoon schoon staan en gebeurt er niets meer.
 
    Werking. De schone foto staat als gewone afbeelding in het document;
    daarboven ligt een canvas met de vuillaag. Vegen wist stukjes uit dat canvas
@@ -38,6 +41,27 @@
   if (!ctx) return;
 
   var rustig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Onthouden dat de bezoeker de code al heeft opgehaald. Alleen een vlaggetje,
+  // geen persoonsgegeven; localStorage kan geblokkeerd zijn (privacymodus),
+  // vandaar de try.
+  var GEHAD = 'yescarwash-korting-gehad';
+  function alGehad() {
+    try { return window.localStorage.getItem(GEHAD) === '1'; } catch (e) { return false; }
+  }
+  function onthoudGehad() {
+    try { window.localStorage.setItem(GEHAD, '1'); } catch (e) { /* niet erg */ }
+  }
+
+  // Al gehad: geen modderlaag, geen oproep, geen spons. Gewoon een schone auto.
+  if (alGehad()) {
+    vak.removeAttribute('data-laden');
+    vak.dataset.klaar = '1';
+    var oproepAf = document.getElementById('wasvakOproep');
+    if (oproepAf) oproepAf.hidden = true;
+    if (hint) hint.hidden = true;
+    return;
+  }
   var KLAAR_VANAF = 0.84; // vanaf hier spoelt de rest vanzelf schoon
   var klaar = false;
   var opgebouwd = false;
@@ -273,7 +297,24 @@
         statusRegel.hidden = false;
         statusRegel.textContent = bericht;
       }
+      // Vanaf nu is de actie voorbij voor deze bezoeker.
+      onthoudGehad();
     };
+
+    var sluitKnop = document.getElementById('beloningSluit');
+    if (sluitKnop) {
+      sluitKnop.addEventListener('click', function () {
+        beloning.classList.remove('toon');
+        window.setTimeout(function () { beloning.hidden = true; }, 450);
+      });
+    }
+    // Escape sluit hem ook, zoals elk paneel.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !beloning.hidden) {
+        beloning.classList.remove('toon');
+        window.setTimeout(function () { beloning.hidden = true; }, 450);
+      }
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
