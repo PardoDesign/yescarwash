@@ -9,10 +9,10 @@
    stempels in plaats van een herberekening van het hele beeld. Een tweede
    canvas tekent het schuim dat van de spons komt.
 
-   De vuillaag wordt AFGELEID uit de foto zelf: de auto is een vrijstaande
-   afbeelding, dus het alpha-kanaal zegt waar carrosserie zit en de helderheid
-   hoeveel vuil daar ligt. Zo valt er nooit vuil naast de auto en hoeft er
-   geen tweede foto te bestaan die toch nooit precies zou uitlijnen.
+   De vuillaag is een ECHTE foto van dezelfde auto onder de modder, pixel-op-
+   pixel uitgelijnd met de schone versie (beide vrijstaand, met alpha-kanaal).
+   Daardoor komt er onder je spons geen berekend waas vandaan maar de auto
+   zoals hij werkelijk schoon is.
 
    Zonder JavaScript, of als er iets misgaat, blijft simpelweg de schone foto
    staan. */
@@ -46,21 +46,6 @@
   var vorige = null;
   var meetTimer = 0;
 
-  // Kleine, stabiele pseudo-random voor de vuillaag: zelfde plek geeft altijd
-  // dezelfde korrel, dus het vuil "flikkert" niet bij opnieuw opbouwen.
-  function ruis(x, y) {
-    var n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
-    return n - Math.floor(n);
-  }
-
-  // De foto staat met object-fit: contain rechts in het vak; hier hetzelfde
-  // uitgerekend zodat de vuillaag exact over de auto valt.
-  function beeldKader(bb, bh, cb, ch) {
-    var schaal = Math.min(cb / bb, ch / bh);
-    var b = bb * schaal;
-    var h = bh * schaal;
-    return { x: cb - b, y: (ch - h) / 2, b: b, h: h };
-  }
   var kaderNu = null;
 
   function maakKwast(straal) {
@@ -79,10 +64,12 @@
     return k;
   }
 
+  var viesBeeld = null;
+
   function bouwVuil() {
     var breed = beeld.clientWidth;
     var hoog = beeld.clientHeight;
-    if (!breed || !hoog || !foto.naturalWidth) return false;
+    if (!breed || !hoog || !viesBeeld || !viesBeeld.naturalWidth) return false;
 
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     doek.width = Math.round(breed * dpr);
@@ -102,83 +89,12 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, w, h);
 
-    var kader = beeldKader(foto.naturalWidth, foto.naturalHeight, w, h);
-    kaderNu = kader;
-    ctx.drawImage(foto, kader.x, kader.y, kader.b, kader.h);
+    // De vieze foto vult het vak precies zoals de schone eronder (beide
+    // hetzelfde doekformaat), dus ze liggen pixel-op-pixel.
+    kaderNu = { x: 0, y: 0, b: w, h: h };
+    ctx.drawImage(viesBeeld, 0, 0, w, h);
 
-    var beeldData;
-    try {
-      beeldData = ctx.getImageData(0, 0, w, h);
-    } catch (e) {
-      // Zou alleen bij een foto van een ander domein gebeuren; dan liever
-      // helemaal geen vuillaag dan een halve.
-      return false;
-    }
-
-    var d = beeldData.data;
-    for (var i = 0; i < d.length; i += 4) {
-      var px = (i / 4) % w;
-      var py = (i / 4 - px) / w;
-
-      // Het alpha-kanaal van de vrijstaande foto zegt of hier carrosserie zit;
-      // buiten de auto blijft de laag dus gegarandeerd leeg.
-      var opAuto = d[i + 3] / 255;
-      if (opAuto <= 0.02) {
-        d[i + 3] = 0;
-        continue;
-      }
-
-      // Helderheid bepaalt hoeveel vuil er zichtbaar is: op de belichte
-      // vlakken hecht het meeste stof, maar overal ligt een basislaag.
-      var lum = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
-      var licht = lum / 52;
-      if (licht > 1) licht = 1;
-      // Lage basis, sterk oplopend met het licht: zo blijft de auto een
-      // herkenbare VIEZE auto in plaats van een egaal beige silhouet.
-      var dekking = (0.16 + 0.84 * licht) * opAuto;
-
-      // Onderin ligt meer opspattend vuil dan op het dak.
-      var laag = py / h;
-      dekking *= 0.8 + laag * 0.45;
-
-      // Korrel plus een paar bredere banen, zodat het geen egale waas wordt.
-      var k = ruis(px * 0.5, py * 0.5);
-      var baan = 0.85 + 0.15 * Math.sin(px * 0.012 + py * 0.03);
-      dekking *= (0.78 + k * 0.5) * baan;
-      if (dekking > 1) dekking = 1;
-
-      // Modderig grijsbruin, donkerder in de korrel: echt vies, niet stoffig.
-      d[i] = 118 - k * 34;
-      d[i + 1] = 105 - k * 32;
-      d[i + 2] = 88 - k * 28;
-      d[i + 3] = Math.round(dekking * 226);
-    }
-    ctx.putImageData(beeldData, 0, 0);
-
-    // Spatten en druipsporen. "source-atop" houdt ze binnen de vuillaag, dus
-    // ze vallen nooit naast de auto op de achtergrond.
-    ctx.globalCompositeOperation = 'source-atop';
-    for (var sp = 0; sp < 420; sp++) {
-      var sx = ruis(sp, 1) * w;
-      var sy = h * (0.36 + ruis(sp, 2) * 0.64);
-      var sr = (1 + ruis(sp, 3) * 6) * (w / 900);
-      ctx.fillStyle = 'rgba(66, 54, 40, ' + (0.18 + ruis(sp, 4) * 0.32).toFixed(3) + ')';
-      ctx.beginPath();
-      ctx.arc(sx, sy, sr, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    // Verticale druipsporen, alsof de laatste regenbui het vuil liet lopen.
-    for (var l = 0; l < 90; l++) {
-      var lx = ruis(l, 7) * w;
-      var ly = h * (0.22 + ruis(l, 8) * 0.5);
-      var len = (12 + ruis(l, 9) * 70) * (h / 500);
-      var lw = (1 + ruis(l, 10) * 2.5) * (w / 900);
-      ctx.fillStyle = 'rgba(60, 49, 36, ' + (0.12 + ruis(l, 11) * 0.22).toFixed(3) + ')';
-      ctx.fillRect(lx, ly, lw, len);
-    }
-    ctx.globalCompositeOperation = 'source-over';
-
-    kwastStraal = Math.max(34, Math.round(w * 0.052));
+    kwastStraal = Math.max(30, Math.round(w * 0.046));
     kwast = maakKwast(kwastStraal);
     opgebouwd = true;
     return true;
@@ -307,7 +223,7 @@
     vak.dataset.klaar = '1';
     vak.dataset.actief = '0';
     if (meter) meter.style.transform = 'scaleX(1)';
-    if (hint) hint.textContent = 'Schoon. Strak. Klaar.';
+    if (hint) hint.textContent = 'Glans erop.';
 
     // Laatste sopgolf over de hele auto, als afspoel-moment.
     if (sctx && !rustig && kaderNu) {
@@ -495,8 +411,22 @@
     }
   }
 
-  if (foto.complete && foto.naturalWidth) start();
-  else foto.addEventListener('load', start, { once: true });
+  // De vieze laag wordt apart geladen (staat als data-attribuut op het vak),
+  // zodat de HTML alleen de schone auto bevat: zonder JavaScript zie je die.
+  var viesPad = beeld.getAttribute('data-vies');
+  if (viesPad) {
+    viesBeeld = new Image();
+    viesBeeld.decoding = 'async';
+    viesBeeld.addEventListener('load', function () {
+      if (foto.complete && foto.naturalWidth) start();
+      else foto.addEventListener('load', start, { once: true });
+    }, { once: true });
+    viesBeeld.addEventListener('error', function () {
+      // Geen vieze laag = gewoon een schone auto in de hero, geen kapot vak.
+      if (hint) hint.hidden = true;
+    }, { once: true });
+    viesBeeld.src = viesPad;
+  }
 
   // Bij het draaien van een telefoon of het verslepen van een venster klopt de
   // maat niet meer. Opnieuw opbouwen mag alleen zolang er nog werk ligt.

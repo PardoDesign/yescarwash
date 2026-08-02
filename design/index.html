@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" href="assets/favicon-yescarwash.png">
   <!-- Versie-query: nginx cachet de CSS lang, zonder deze bump blijft een
        bezoeker de oude stylesheet zien. Bij elke CSS-wijziging ophogen. -->
-  <link rel="stylesheet" href="styles/yescarwash.css?v=20260802a">
+  <link rel="stylesheet" href="styles/yescarwash.css?v=20260802b">
 </head>
 <body>
 
@@ -67,8 +67,8 @@
          met schuim; helemaal schoon = 10% korting. Zonder JavaScript zie je
          gewoon de schone auto, dus de hero werkt altijd. -->
     <figure class="wasvak" id="wasvak">
-      <div class="wasvak-beeld">
-        <img src="assets/auto-vrij.webp" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="844" fetchpriority="high">
+      <div class="wasvak-beeld" data-vies="assets/auto-vies.webp?v=20260802b">
+        <img src="assets/auto-schoon.webp" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="660" fetchpriority="high">
         <canvas class="wasvak-vuil" aria-hidden="true"></canvas>
         <canvas class="wasvak-schuim" aria-hidden="true"></canvas>
         <span class="wasvak-spons" aria-hidden="true">
@@ -115,7 +115,7 @@
     <div class="wrap hero-grid">
       <div class="hero-tekst">
         <p class="hero-label">Carwash &middot; Apeldoorn</p>
-        <h1><span class="rgl">Schoon.</span> <span class="stil">Strak.</span> Klaar.</h1>
+        <h1><span class="stil">Vuil eraf.</span> <span class="rgl">Glans</span> erop.</h1>
         <span class="hero-streep" aria-hidden="true"></span>
         <p class="hero-sub">
           Van een snelle basic carwash tot handwash, interieur-detailing en de complete
@@ -388,6 +388,6 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') zetOpen(false); });
     })();
   </script>
-  <script src="scripts/wasvak.js?v=20260802a" defer></script>
+  <script src="scripts/wasvak.js?v=20260802b" defer></script>
 </body>
 </html>

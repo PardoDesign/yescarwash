@@ -154,7 +154,7 @@ a:focus-visible, button:focus-visible {
 .hero {
   position: relative;
   padding: 96px 0 110px;
-  min-height: 620px;
+  min-height: 660px;
   overflow: hidden;
   /* De wasstraat als volledige achtergrond (edge-to-edge), onder een donkere
      sluier met fades naar het paginazwart boven en onder: de banner is EEN
@@ -191,8 +191,8 @@ a:focus-visible, button:focus-visible {
   font-family: var(--font-display);
   /* Een (1) lopende regel in plaats van een toren van drie: de kop leest als
      een merkzin, niet als een poster. */
-  font-size: clamp(34px, 4.3vw, 62px);
-  line-height: 1.12;
+  font-size: clamp(34px, 4.2vw, 60px);
+  line-height: 1.14;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   margin-top: 24px;
@@ -491,14 +491,13 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
      fotorand meer om te verbergen: geen masker, geen kader, op geen enkel
      schermformaat. Hij zweeft simpelweg voor de wasstraat. */
   position: absolute;
-  right: clamp(0px, 4vw, 190px);
+  right: clamp(0px, 2vw, 90px);
   top: 52%;
   transform: translateY(-50%);
-  height: min(76%, 560px);
-  max-width: 94vw;
-  aspect-ratio: 1500 / 844;
+  width: min(64vw, 1120px);
+  aspect-ratio: 1500 / 660;
   pointer-events: auto;
-  filter: drop-shadow(0 26px 40px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 30px 46px rgba(0, 0, 0, 0.62));
 }
 .wasvak-beeld img,
 .wasvak-vuil,
@@ -719,7 +718,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
     height: auto;
     width: 100%;
     max-width: none;
-    aspect-ratio: 1500 / 844;
+    aspect-ratio: 1500 / 660;
   }
   .wasvak-voet {
     position: static;

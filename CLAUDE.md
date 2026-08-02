@@ -35,15 +35,17 @@ doeken), opgehaald 2026-08-02 en donker/blauw gegradeerd (Pillow: kleur 0.42,
 helderheid 0.5, blauwe tint) zodat hij sfeer geeft zonder met de merkkleuren of de
 tekst te vechten. Zelfde Pexels-licentie als hieronder.
 
-`auto-vrij.webp` is de auto in de hero (het wasvak): VRIJSTAAND, met alpha-kanaal.
-Bron: Pexels-foto 261985 ("black luxury car photographed in studio"), opgehaald
-2026-08-01, strak uitgesneden rond de auto (1500x844) en op 2026-08-02 losgemaakt van
-de zwarte studio-achtergrond (Pillow: drempel op helderheid, closing tegen gaten in de
-zwarte lak, per kolom vullen, onderrand uitvloeiend als schaduw). **Waarom vrijstaand:**
-met een rechthoekige foto zag je op een lichtere achtergrond altijd het zwarte vlak als
-kader, en een masker verplaatst dat probleem alleen. Zonder achtergrond is er niets te
-verbergen. De vuillaag in wasvak.js leest het alpha-kanaal, dus vuil valt nooit naast
-de auto. **Licentie gecontroleerd bij de bron op 2026-08-01:** de
+`auto-schoon.webp` en `auto-vies.webp` zijn de twee lagen van het wasvak: dezelfde
+auto schoon en onder de modder, allebei VRIJSTAAND (alpha-kanaal) en pixel-op-pixel
+uitgelijnd op een doek van 1500x660. **Bron: door de eigenaar aangeleverd beeld
+(ChatGPT-render, 2026-08-02), schoon en vies naast elkaar op een transparante
+achtergrond.** Ik heb beide helften uitgesneden, op hun eigen bounding box geschaald en
+op hetzelfde doek gecentreerd, zodat de vieze laag exact over de schone valt.
+
+**Waarom vrijstaand:** met een rechthoekige foto zag je op een lichtere achtergrond
+altijd het vlak als kader, en een masker verplaatst dat probleem alleen. **Waarom een
+echte vieze foto** in plaats van berekend vuil: onder de spons komt nu de auto tevoorschijn
+zoals hij werkelijk schoon is, en dat is veel overtuigender dan een waas. **Licentie gecontroleerd bij de bron op 2026-08-01:** de
 Pexels-licentie staat gratis commercieel gebruik toe zonder naamsvermelding, met als
 grens dat je de foto niet ongewijzigd doorverkoopt of op een andere stockdienst zet.
 Wil de eigenaar liever een eigen auto in beeld, dan is dit bestand het enige dat
