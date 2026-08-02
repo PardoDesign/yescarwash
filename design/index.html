@@ -97,8 +97,18 @@
       </figcaption>
       <div class="wasvak-beloning" id="wasvakBeloning" role="status" hidden>
         <p class="beloning-kop">Blinkend schoon.</p>
-        <p class="beloning-tekst">Jij poetst, wij trakteren: <strong>10% korting</strong> op je volgende wasbeurt.</p>
-        <p class="beloning-code">Zeg <b>SPONS10</b> aan de balie</p>
+        <p class="beloning-tekst">Laat je e-mailadres achter en ontvang <strong>10% korting</strong> op je volgende wasbeurt.</p>
+        <!-- data-api = het YES-ledenplatform. Draait nu alleen lokaal; bij
+             live-gang van het platform hier de echte URL invullen EN die
+             origin toevoegen aan connect-src in nginx.conf. -->
+        <form class="beloning-form" id="beloningForm" data-api="http://localhost:3020/api/acties/inschrijven">
+          <label class="sr-only" for="beloningEmail">E-mailadres</label>
+          <input class="beloning-veld" id="beloningEmail" name="email" type="email" required autocomplete="email" placeholder="jij@voorbeeld.nl">
+          <button type="submit" class="beloning-knop">Stuur mij de code</button>
+        </form>
+        <p class="beloning-privacy">Je ontvangt de code en af en toe nieuws van YES CARWASH. Afmelden kan altijd.</p>
+        <p class="beloning-code" hidden>Zeg <b>SPONS10</b> aan de balie</p>
+        <p class="beloning-status" hidden></p>
       </div>
     </figure>
 

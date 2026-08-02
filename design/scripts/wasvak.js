@@ -53,14 +53,15 @@
     return n - Math.floor(n);
   }
 
-  // De foto wordt met object-fit: cover getoond; hier hetzelfde uitgerekend
-  // zodat de vuillaag exact over de zichtbare uitsnede valt.
-  function coverKader(bb, bh, cb, ch) {
-    var schaal = Math.max(cb / bb, ch / bh);
+  // De foto staat met object-fit: contain rechts in het vak; hier hetzelfde
+  // uitgerekend zodat de vuillaag exact over de auto valt.
+  function beeldKader(bb, bh, cb, ch) {
+    var schaal = Math.min(cb / bb, ch / bh);
     var b = bb * schaal;
     var h = bh * schaal;
-    return { x: (cb - b) / 2, y: (ch - h) / 2, b: b, h: h };
+    return { x: cb - b, y: (ch - h) / 2, b: b, h: h };
   }
+  var kaderNu = null;
 
   function maakKwast(straal) {
     var k = document.createElement('canvas');
@@ -101,7 +102,8 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, w, h);
 
-    var kader = coverKader(foto.naturalWidth, foto.naturalHeight, w, h);
+    var kader = beeldKader(foto.naturalWidth, foto.naturalHeight, w, h);
+    kaderNu = kader;
     ctx.drawImage(foto, kader.x, kader.y, kader.b, kader.h);
 
     var beeldData;
@@ -263,9 +265,14 @@
   var miniCtx = mini.getContext('2d', { willReadFrequently: true });
 
   function meet() {
-    if (!miniCtx || klaar) return;
+    if (!miniCtx || klaar || !kaderNu) return;
     miniCtx.clearRect(0, 0, mini.width, mini.height);
-    miniCtx.drawImage(doek, 0, 0, mini.width, mini.height);
+    var mx = kaderNu.x + kaderNu.b * 0.26;
+    miniCtx.drawImage(
+      doek,
+      mx, kaderNu.y, kaderNu.x + kaderNu.b - mx, kaderNu.h,
+      0, 0, mini.width, mini.height,
+    );
     var d = miniCtx.getImageData(0, 0, mini.width, mini.height).data;
     var vuil = 0;
     for (var i = 3; i < d.length; i += 4) {
@@ -296,23 +303,98 @@
     if (hint) hint.textContent = 'Schoon. Strak. Klaar.';
 
     // Laatste sopgolf over de hele auto, als afspoel-moment.
-    if (sctx && !rustig) {
-      var w = doek.width;
-      var h = doek.height;
+    if (sctx && !rustig && kaderNu) {
       for (var i = 0; i < 130; i++) {
-        spawnSchuim(w * (0.15 + Math.random() * 0.7), h * (0.3 + Math.random() * 0.55), 1);
+        spawnSchuim(
+          kaderNu.x + kaderNu.b * (0.12 + Math.random() * 0.76),
+          kaderNu.y + kaderNu.h * (0.28 + Math.random() * 0.55),
+          1,
+        );
       }
     }
 
-    // En dan de beloning: 10% korting op de volgende wasbeurt.
+    // En dan de beloning: e-mailadres achterlaten voor 10% korting.
     if (beloning) {
       window.setTimeout(function () {
         beloning.hidden = false;
         requestAnimationFrame(function () {
           beloning.classList.add('toon');
+          var veld = beloning.querySelector('input[type="email"]');
+          if (veld && window.matchMedia('(pointer: fine)').matches) veld.focus();
         });
       }, rustig ? 0 : 550);
     }
+  }
+
+  /* ── Beloning: e-mail naar de mailinglijst ─────────────────────────────
+     Het adres gaat naar het YES-ledenplatform (data-api op het formulier).
+     Lukt dat niet, bijvoorbeeld omdat het platform nog niet publiek draait,
+     dan krijgt de bezoeker ALSNOG de code plus een eerlijke melding: de
+     korting mag nooit sneuvelen op techniek. */
+  var form = document.getElementById('beloningForm');
+  if (form && beloning) {
+    var codeRegel = beloning.querySelector('.beloning-code');
+    var statusRegel = beloning.querySelector('.beloning-status');
+    var privacyRegel = beloning.querySelector('.beloning-privacy');
+
+    var toonCode = function (bericht) {
+      form.hidden = true;
+      if (privacyRegel) privacyRegel.hidden = true;
+      if (codeRegel) codeRegel.hidden = false;
+      if (statusRegel && bericht) {
+        statusRegel.hidden = false;
+        statusRegel.textContent = bericht;
+      }
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var veld = form.querySelector('input[type="email"]');
+      if (!veld || !veld.checkValidity()) {
+        if (veld && veld.reportValidity) veld.reportValidity();
+        return;
+      }
+
+      var api = form.getAttribute('data-api') || '';
+      // Alleen proberen als het endpoint bereikbaar kan zijn: zolang het
+      // platform alleen lokaal draait, zou een poging vanaf de publieke site
+      // enkel op de CSP stuklopen.
+      var lokaal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var eigenOrigin = api.indexOf(location.origin + '/') === 0;
+      if (!api || (!lokaal && !eigenOrigin)) {
+        toonCode('Je e-mailadres kon nu niet worden opgeslagen; de code werkt gewoon.');
+        return;
+      }
+
+      var knop = form.querySelector('button');
+      if (knop) {
+        knop.disabled = true;
+        knop.textContent = 'Versturen...';
+      }
+      var ctrl = 'AbortController' in window ? new AbortController() : null;
+      var timer = ctrl ? window.setTimeout(function () { ctrl.abort(); }, 6000) : 0;
+
+      fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: 'yescarwash',
+          email: veld.value.trim(),
+          bron: 'wasvak-hero',
+          actieCode: 'SPONS10',
+        }),
+        signal: ctrl ? ctrl.signal : undefined,
+      })
+        .then(function (r) {
+          if (timer) window.clearTimeout(timer);
+          if (!r.ok) throw new Error('http ' + r.status);
+          toonCode('Gelukt! Je staat op de lijst.');
+        })
+        .catch(function () {
+          if (timer) window.clearTimeout(timer);
+          toonCode('Je e-mailadres kon nu niet worden opgeslagen; de code werkt gewoon.');
+        });
+    });
   }
 
   function positie(e) {
@@ -327,10 +409,17 @@
     spons.style.transform = 'translate3d(' + p.cx + 'px,' + p.cy + 'px,0) rotate(-8deg)';
   }
 
-  beeld.addEventListener('pointerenter', function () {
-    if (klaar) return;
-    vak.dataset.actief = '1';
-  });
+  // Alleen op de auto zelf poetsen: daarbuiten (de lege hero en de tekst)
+  // hoort de gewone cursor.
+  function opAuto(p) {
+    if (!kaderNu) return false;
+    var m = kwastStraal;
+    return (
+      p.x > kaderNu.x - m && p.x < kaderNu.x + kaderNu.b + m &&
+      p.y > kaderNu.y - m && p.y < kaderNu.y + kaderNu.h + m
+    );
+  }
+
   beeld.addEventListener('pointerleave', function () {
     vak.dataset.actief = '0';
     vorige = null;
@@ -338,6 +427,12 @@
   beeld.addEventListener('pointermove', function (e) {
     if (klaar || !opgebouwd) return;
     var p = positie(e);
+    var binnen = opAuto(p);
+    vak.dataset.actief = binnen ? '1' : '0';
+    if (!binnen) {
+      vorige = null;
+      return;
+    }
     volgSpons(p);
     // Met de muis veeg je door te bewegen; met een vinger alleen als je
     // ingedrukt houdt, anders zou scrollen de auto poetsen.
@@ -345,8 +440,9 @@
   });
   beeld.addEventListener('pointerdown', function (e) {
     if (klaar || !opgebouwd) return;
-    vak.dataset.actief = '1';
     var p = positie(e);
+    if (!opAuto(p)) return;
+    vak.dataset.actief = '1';
     volgSpons(p);
     vorige = null;
     veeg(p.x, p.y);
@@ -358,15 +454,14 @@
   // Op een aanraakscherm laat de site het gebaar eerst zelf zien: een korte
   // veeg over de motorkap. De rest doet de bezoeker.
   function voorbeeldVeeg() {
-    if (klaar || !opgebouwd) return;
-    var w = doek.width;
-    var h = doek.height;
+    if (klaar || !opgebouwd || !kaderNu) return;
+    var k = kaderNu;
     var start = performance.now();
     var duur = 1500;
     function stap(nu) {
       var t = Math.min((nu - start) / duur, 1);
-      var x = w * (0.18 + t * 0.6);
-      var y = h * (0.52 + Math.sin(t * Math.PI * 1.6) * 0.16);
+      var x = k.x + k.b * (0.18 + t * 0.6);
+      var y = k.y + k.h * (0.52 + Math.sin(t * Math.PI * 1.6) * 0.16);
       veeg(x, y);
       if (t < 1) requestAnimationFrame(stap);
       else vorige = null;
