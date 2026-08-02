@@ -54,10 +54,14 @@ Alle teksten en prijzen komen **letterlijk van yescarwash.nl** (prijslijst gever
 - Openingstijden: ma-vr 10:00-17:00, za-zo 10:00-15:00, na 17:00 uitsluitend op afspraak.
 - Contact: 06 15 67 79 97, info@yescarwash.nl.
 - **Uitzondering op "niks verzinnen" (verzoek eigenaar 2026-08-02):** wie in de hero de
-  auto helemaal schoonpoetst krijgt de beloning-kaart met **10% korting op de volgende
-  wasbeurt, code SPONS10** (`wasvak-beloning` in index.html). VOOR live-gang met
-  YesCarwash afstemmen dat de balie die code echt accepteert; anders de kaart aanpassen
-  of weghalen.
+  auto helemaal schoonpoetst krijgt de beloning-kaart: e-mailadres achterlaten =
+  **10% korting op de volgende wasbeurt, code SPONS10** (`wasvak-beloning` in
+  index.html). Het adres gaat naar de mailinglijst van het yesfit-platform via
+  `POST /api/acties/inschrijven` (data-api op het formulier; beheer onder
+  `/beheer/mailing`). Zolang het platform alleen lokaal draait toont de site bij een
+  mislukte opslag een eerlijke melding en ALTIJD de code. VOOR live-gang: (1) balie
+  accepteert SPONS10, (2) data-api naar de echte platform-URL, (3) die origin toevoegen
+  aan connect-src in nginx.conf, (4) dubbele opt-in overwegen (security-baseline).
 
 ## Koppeling met het yesfit-platform
 
