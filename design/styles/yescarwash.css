@@ -157,7 +157,21 @@ a:focus-visible, button:focus-visible {
     radial-gradient(560px 420px at -8% 92%, rgba(46, 95, 151, 0.12), transparent 60%),
     var(--bg-base);
 }
-.hero-grid { position: relative; z-index: 2; }
+/* Leesbaarheids-sluier: de tekst staat op een donkere overloop terwijl de
+   auto rechts vrij blijft. Boven de auto (z1), onder de tekst (z3). */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--bg-base) 30%, rgba(10, 9, 8, 0.55) 48%, transparent 64%);
+}
+.hero-grid {
+  position: relative;
+  z-index: 3;
+  /* De laag zweeft over de auto heen; zonder dit vangt hij de muis af en
+     valt er niets meer te poetsen. Alleen de tekstkolom vangt de muis. */
+  pointer-events: none;
+}
 .hero-label {
   font-family: var(--font-mono);
   font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase;
@@ -167,14 +181,14 @@ a:focus-visible, button:focus-visible {
 .hero-label::before { content: ''; width: 46px; height: 1px; background: var(--accent); }
 .hero h1 {
   font-family: var(--font-display);
-  /* Bewust kleiner dan de eerste opzet (die liep tot 148px): op een breed
-     scherm werd de kop een muur. Nu leest hij als een merk, niet als een
-     poster. */
-  font-size: clamp(50px, 6.6vw, 96px);
-  line-height: 0.96;
+  /* Een (1) lopende regel in plaats van een toren van drie: de kop leest als
+     een merkzin, niet als een poster. */
+  font-size: clamp(34px, 4.3vw, 62px);
+  line-height: 1.12;
   text-transform: uppercase;
-  letter-spacing: -0.005em;
-  margin-top: 26px;
+  letter-spacing: 0.01em;
+  margin-top: 24px;
+  max-width: 11em;
 }
 .hero h1 .rgl { color: var(--accent); }
 /* Middelste regel gedempt in plaats van een omlijnde letter: hetzelfde ritme,
@@ -189,7 +203,7 @@ a:focus-visible, button:focus-visible {
 }
 .hero-sub {
   margin-top: 26px;
-  max-width: 500px;
+  max-width: 460px;
   color: var(--text-secondary);
   font-size: 17px;
   line-height: 1.72;
@@ -441,41 +455,32 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
 .brand { align-items: center; gap: 10px; }
 .brand img { height: 44px; width: auto; }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 56px;
-  align-items: center;
-}
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; }
-}
+.hero-tekst { position: relative; max-width: 560px; pointer-events: auto; }
 
 /* ===== WASVAK (de auto die je zelf schoonveegt) =====
-   Opbouw: onderop de schone foto, daarboven een canvas met een laag stof die
-   je met de spons wegveegt. Zonder JavaScript blijft alleen de schone foto
-   over, dus de hero is nooit stuk. De dubbele rand (schil + beeld) geeft het
-   geheel de vorm van een fysiek paneel; de radius van het beeld is de
-   buitenradius min de padding, zodat de rondingen concentrisch lopen. */
+   De auto staat als losse laag in de hero: de studiofoto heeft dezelfde
+   zwarte achtergrond als de site, en het masker laat de randen zacht in de
+   pagina overlopen (geen kader meer). Daaroverheen ligt een canvas met een
+   dikke laag stof en modder die je met de spons wegveegt; een tweede canvas
+   tekent het schuim. Zonder JavaScript blijft alleen de schone auto over. */
 .wasvak {
-  position: relative;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: 0 34px 80px -40px rgba(0, 0, 0, 0.9);
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 1.5vw;
+  width: min(60vw, 980px);
+  transform: translateY(-49%);
+  margin: 0;
 }
 .wasvak-beeld {
   position: relative;
-  overflow: hidden;
-  border-radius: 13px;
-  background: var(--bg-deeper);
-  /* De foto is 16:9; een vaste verhouding voorkomt dat de pagina verspringt
-     terwijl hij laadt. */
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1500 / 844;
+  -webkit-mask-image: radial-gradient(112% 108% at 55% 46%, #000 52%, transparent 88%);
+  mask-image: radial-gradient(112% 108% at 55% 46%, #000 52%, transparent 88%);
 }
 .wasvak-beeld img,
-.wasvak-vuil {
+.wasvak-vuil,
+.wasvak-schuim {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -483,19 +488,12 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   object-fit: cover;
 }
 .wasvak-vuil {
-  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1);
   touch-action: pan-y;
 }
+.wasvak-schuim { pointer-events: none; }
 .wasvak[data-klaar="1"] .wasvak-vuil { opacity: 0; pointer-events: none; }
-
-/* Zachte vignette zodat de studio-achtergrond van de foto in het zwart van de
-   site overloopt in plaats van als rechthoek te eindigen. */
-.wasvak-beeld::after {
-  content: '';
-  position: absolute; inset: 0;
-  pointer-events: none;
-  background: radial-gradient(120% 100% at 50% 45%, transparent 52%, rgba(6, 5, 4, 0.75) 100%);
-}
+.wasvak[data-klaar="1"] .wasvak-spons { opacity: 0; }
 
 /* De spons volgt de aanwijzer; de echte cursor gaat weg zolang je in het vak
    bent, anders zie je twee dingen tegelijk. */
@@ -529,17 +527,18 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   100% { transform: translate3d(-6px, -34px, 0) scale(1); opacity: 0; }
 }
 
-/* Voet: wat je moet doen, en hoe ver je bent. */
+/* Voet: wat je moet doen en hoe ver je bent, klein en stil onder de auto. */
 .wasvak-voet {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 6px 2px;
+  gap: 14px;
+  margin: 2px 8% 0 16%;
 }
 .wasvak-hint {
   font-family: var(--font-mono);
   font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--text-tertiary);
+  white-space: nowrap;
   transition: color 0.4s ease;
 }
 .wasvak[data-klaar="1"] .wasvak-hint { color: var(--accent); }
@@ -559,12 +558,71 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* Beloning na het poetsen: 10% korting, midden op de auto. Zelfde schuine
+   hoeken als de knoppen, zodat hij bij de huisstijl hoort. */
+.wasvak-beloning {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  z-index: 4;
+  width: min(330px, 88%);
+  transform: translate(-50%, -50%) scale(0.92);
+  opacity: 0;
+  padding: 26px 28px 24px;
+  text-align: center;
+  background: rgba(8, 7, 6, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(67, 128, 193, 0.45);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  transition: opacity 0.45s cubic-bezier(0.32, 0.72, 0, 1), transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+.wasvak-beloning.toon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+.beloning-kop {
+  font-family: var(--font-display);
+  font-size: 25px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.beloning-tekst {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.beloning-tekst strong { color: var(--warm-hot); }
+.beloning-code {
+  margin-top: 14px;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-hot);
+  border: 1px dashed rgba(67, 128, 193, 0.55);
+  padding: 9px 14px;
+}
+.beloning-code b { color: var(--text-primary); }
+
 @media (max-width: 900px) {
-  .wasvak { margin-top: 8px; }
+  /* Op smal komt de auto ONDER de tekst, als gewoon blok. */
+  .hero { display: flex; flex-direction: column; }
+  .hero::before { display: none; }
+  .hero-grid { order: 1; }
+  .wasvak {
+    position: relative;
+    order: 2;
+    top: auto; right: auto;
+    transform: none;
+    width: 100%;
+    margin-top: 4px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .wasvak-spons .bel { animation: none; opacity: 0; }
-  .wasvak-vuil, .wasvak-meter i { transition: none; }
+  .wasvak-vuil, .wasvak-meter i, .wasvak-beloning { transition: none; }
 }
 
 .foto-band { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 40px; }

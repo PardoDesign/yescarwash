@@ -61,14 +61,51 @@
       <div class="druppel" style="left: 84%; animation-delay: 3.1s;"></div>
       <div class="druppel" style="left: 91%; animation-delay: 2.2s;"></div>
     </div>
+
+    <!-- Wasvak: de auto staat als achtergrond in de hero, onder een dikke
+         laag stof en modder. Vegen met de muis (of vinger) poetst hem schoon,
+         met schuim; helemaal schoon = 10% korting. Zonder JavaScript zie je
+         gewoon de schone auto, dus de hero werkt altijd. -->
+    <figure class="wasvak" id="wasvak">
+      <div class="wasvak-beeld">
+        <img src="assets/auto-hero.jpg" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="844" fetchpriority="high">
+        <canvas class="wasvak-vuil" aria-hidden="true"></canvas>
+        <canvas class="wasvak-schuim" aria-hidden="true"></canvas>
+        <span class="wasvak-spons" aria-hidden="true">
+          <svg viewBox="0 0 52 34" width="52" height="34">
+            <defs>
+              <linearGradient id="sponsBoven" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#7fb3e4"/>
+                <stop offset="1" stop-color="#3f78b6"/>
+              </linearGradient>
+            </defs>
+            <rect x="1" y="14" width="50" height="17" rx="7" fill="#2e5f97"/>
+            <rect x="1" y="3" width="50" height="16" rx="7" fill="url(#sponsBoven)"/>
+            <rect x="1" y="17" width="50" height="1.2" fill="rgba(255,255,255,0.5)"/>
+            <g fill="#24507f" opacity="0.4">
+              <circle cx="12" cy="9" r="1.7"/><circle cx="22" cy="7" r="1.2"/>
+              <circle cx="31" cy="11" r="1.5"/><circle cx="41" cy="8" r="1.1"/>
+              <circle cx="17" cy="13" r="1"/><circle cx="36" cy="14" r="1.2"/>
+            </g>
+          </svg>
+          <i class="bel bel-1"></i><i class="bel bel-2"></i><i class="bel bel-3"></i>
+        </span>
+      </div>
+      <figcaption class="wasvak-voet">
+        <span class="wasvak-hint" id="wasvakHint">Veeg de auto schoon</span>
+        <span class="wasvak-meter" aria-hidden="true"><i id="wasvakMeter"></i></span>
+      </figcaption>
+      <div class="wasvak-beloning" id="wasvakBeloning" role="status" hidden>
+        <p class="beloning-kop">Blinkend schoon.</p>
+        <p class="beloning-tekst">Jij poetst, wij trakteren: <strong>10% korting</strong> op je volgende wasbeurt.</p>
+        <p class="beloning-code">Zeg <b>SPONS10</b> aan de balie</p>
+      </div>
+    </figure>
+
     <div class="wrap hero-grid">
-      <div>
+      <div class="hero-tekst">
         <p class="hero-label">Carwash &middot; Apeldoorn</p>
-        <h1>
-          <span class="rgl">Schoon.</span><br>
-          <span class="stil">Strak.</span><br>
-          Klaar.
-        </h1>
+        <h1><span class="rgl">Schoon.</span> <span class="stil">Strak.</span> Klaar.</h1>
         <span class="hero-streep" aria-hidden="true"></span>
         <p class="hero-sub">
           Van een snelle basic carwash tot handwash, interieur-detailing en de complete
@@ -80,39 +117,6 @@
         </div>
         <p class="hero-coord"><b>Molenmakershoek 68</b> &middot; 7328 JK Apeldoorn &middot; 06&nbsp;15&nbsp;67&nbsp;79&nbsp;97</p>
       </div>
-
-      <!-- Wasvak: de auto ligt onder een laag stof en vuil. Vegen met de muis
-           (of vinger) haalt die laag weg. Zonder JavaScript zie je gewoon de
-           schone auto, dus de hero werkt altijd. -->
-      <figure class="wasvak" id="wasvak">
-        <div class="wasvak-beeld">
-          <img src="assets/auto-hero.jpg" alt="Glanzend gepoetste auto na een wasbeurt bij YES CARWASH" width="1500" height="844" fetchpriority="high">
-          <canvas class="wasvak-vuil" aria-hidden="true"></canvas>
-          <span class="wasvak-spons" aria-hidden="true">
-            <svg viewBox="0 0 52 34" width="52" height="34">
-              <defs>
-                <linearGradient id="sponsBoven" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#7fb3e4"/>
-                  <stop offset="1" stop-color="#3f78b6"/>
-                </linearGradient>
-              </defs>
-              <rect x="1" y="14" width="50" height="17" rx="7" fill="#2e5f97"/>
-              <rect x="1" y="3" width="50" height="16" rx="7" fill="url(#sponsBoven)"/>
-              <rect x="1" y="17" width="50" height="1.2" fill="rgba(255,255,255,0.5)"/>
-              <g fill="#24507f" opacity="0.4">
-                <circle cx="12" cy="9" r="1.7"/><circle cx="22" cy="7" r="1.2"/>
-                <circle cx="31" cy="11" r="1.5"/><circle cx="41" cy="8" r="1.1"/>
-                <circle cx="17" cy="13" r="1"/><circle cx="36" cy="14" r="1.2"/>
-              </g>
-            </svg>
-            <i class="bel bel-1"></i><i class="bel bel-2"></i><i class="bel bel-3"></i>
-          </span>
-        </div>
-        <figcaption class="wasvak-voet">
-          <span class="wasvak-hint" id="wasvakHint">Veeg de auto schoon</span>
-          <span class="wasvak-meter" aria-hidden="true"><i id="wasvakMeter"></i></span>
-        </figcaption>
-      </figure>
     </div>
   </header>
 

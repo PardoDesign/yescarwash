@@ -53,6 +53,11 @@ Alle teksten en prijzen komen **letterlijk van yescarwash.nl** (prijslijst gever
   kofferbak of sponningen EUR 10, hand polish auto EUR 30, stoelen EUR 35, hand polish caravan EUR 40.
 - Openingstijden: ma-vr 10:00-17:00, za-zo 10:00-15:00, na 17:00 uitsluitend op afspraak.
 - Contact: 06 15 67 79 97, info@yescarwash.nl.
+- **Uitzondering op "niks verzinnen" (verzoek eigenaar 2026-08-02):** wie in de hero de
+  auto helemaal schoonpoetst krijgt de beloning-kaart met **10% korting op de volgende
+  wasbeurt, code SPONS10** (`wasvak-beloning` in index.html). VOOR live-gang met
+  YesCarwash afstemmen dat de balie die code echt accepteert; anders de kaart aanpassen
+  of weghalen.
 
 ## Koppeling met het yesfit-platform
 
