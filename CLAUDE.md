@@ -74,9 +74,10 @@ Alle teksten en prijzen komen **letterlijk van yescarwash.nl** (prijslijst gever
 - Contact: 06 15 67 79 97, info@yescarwash.nl.
 - **Uitzondering op "niks verzinnen" (verzoek eigenaar 2026-08-02):** wie in de hero de
   auto helemaal schoonpoetst krijgt de beloning-kaart: e-mailadres achterlaten =
-  **korting op de volgende wasbeurt, code SPONS10**. Het PERCENTAGE staat bewust niet in
-  de teksten (eigenaar-eis): overal alleen "korting", zodat de hoogte vrij blijft tot de
-  balie hem vastlegt. (`wasvak-beloning` in
+  **10% korting op de volgende wasbeurt, code SPONS10**. LET OP het onderscheid
+  (eigenaar-eis 2026-08-02): de oproep BIJ de auto zegt alleen "en krijg korting", het
+  percentage staat pas in de popup NA het schoonvegen. Zo lokt de oproep zonder een
+  bedrag te beloven, en weet je precies wat je krijgt op het moment dat je het krijgt. (`wasvak-beloning` in
   index.html). Het adres gaat naar de mailinglijst van het yesfit-platform via
   `POST /api/acties/inschrijven` (data-api op het formulier; beheer onder
   `/beheer/mailing`). Zolang het platform alleen lokaal draait toont de site bij een

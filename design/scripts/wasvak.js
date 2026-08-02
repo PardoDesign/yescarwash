@@ -252,7 +252,7 @@
     vak.dataset.klaar = '1';
     vak.dataset.actief = '0';
     if (meter) meter.style.transform = 'scaleX(1)';
-    if (hint) hint.textContent = 'Glans erop.';
+    if (hint) hint.textContent = 'Schoon werk.';
 
     // Laatste sopgolf over de hele auto, als afspoel-moment.
     if (sctx && !rustig && kaderNu) {
