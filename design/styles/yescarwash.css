@@ -153,9 +153,13 @@ a:focus-visible, button:focus-visible {
   padding: 96px 0 110px;
   min-height: 620px;
   overflow: hidden;
+  /* De wasstraat als volledige achtergrond (edge-to-edge), onder een donkere
+     sluier met fades naar het paginazwart boven en onder: de banner is EEN
+     geheel met de rest van de pagina, op elk schermformaat. */
   background:
-    radial-gradient(720px 420px at 82% -10%, rgba(67, 128, 193, 0.16), transparent 65%),
-    radial-gradient(560px 420px at -8% 92%, rgba(46, 95, 151, 0.12), transparent 60%),
+    radial-gradient(720px 420px at 82% -10%, rgba(67, 128, 193, 0.14), transparent 65%),
+    linear-gradient(180deg, var(--bg-base) 0%, rgba(10, 9, 8, 0.5) 14%, rgba(10, 9, 8, 0.44) 60%, var(--bg-base) 100%),
+    url('../assets/wasstraat.jpg') center 38% / cover no-repeat,
     var(--bg-base);
 }
 /* Leesbaarheids-sluier: de tekst staat op een donkere overloop terwijl de
@@ -477,14 +481,22 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   inset: 0;
   z-index: 1;
   margin: 0;
+  pointer-events: none;
 }
 .wasvak-beeld {
+  /* De auto als eigen laag rechts, met het masker OP de foto-doos zelf: de
+     randen vervagen daardoor op elk schermformaat, ook ultrabreed, zodat er
+     nooit een rechthoek-naad in de achtergrond zichtbaar is. */
   position: absolute;
-  inset: 0;
-  /* Masker verankerd op de auto rechts: de randen lopen zacht over in het
-     paginazwart, zodat foto en pagina EEN geheel zijn. */
-  -webkit-mask-image: radial-gradient(70% 120% at 74% 52%, #000 46%, transparent 92%);
-  mask-image: radial-gradient(70% 120% at 74% 52%, #000 46%, transparent 92%);
+  right: clamp(0px, 3vw, 140px);
+  top: 50%;
+  transform: translateY(-50%);
+  height: min(88%, 680px);
+  max-width: 96vw;
+  aspect-ratio: 1500 / 844;
+  pointer-events: auto;
+  -webkit-mask-image: radial-gradient(72% 86% at 52% 50%, #000 52%, transparent 90%);
+  mask-image: radial-gradient(72% 86% at 52% 50%, #000 52%, transparent 90%);
 }
 .wasvak-beeld img,
 .wasvak-vuil,
@@ -703,6 +715,12 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   .wasvak-beeld {
     position: relative;
     inset: auto;
+    right: auto;
+    top: auto;
+    transform: none;
+    height: auto;
+    width: 100%;
+    max-width: none;
     aspect-ratio: 1500 / 844;
   }
   .wasvak-voet {

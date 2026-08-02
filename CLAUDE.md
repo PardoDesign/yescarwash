@@ -30,6 +30,11 @@ Elementor-kit-primary van yescarwash.nl, gebruikt als actiekleur voor knoppen en
 foto's van de site (2025-uploads: 22319 schuimpistool, 22322 handwash, 6979 velg,
 230056 spons/handwerk). Bron: yescarwash.nl wp-content/uploads, opgehaald 2026-07-10.
 
+`wasstraat.jpg` is de achtergrond van de hero: Pexels-foto 210627 (wastunnel met
+doeken), opgehaald 2026-08-02 en donker/blauw gegradeerd (Pillow: kleur 0.42,
+helderheid 0.5, blauwe tint) zodat hij sfeer geeft zonder met de merkkleuren of de
+tekst te vechten. Zelfde Pexels-licentie als hieronder.
+
 `auto-hero.jpg` is de auto in de hero (het wasvak). Bron: Pexels-foto 261985
 ("black luxury car photographed in studio"), opgehaald 2026-08-01, strak uitgesneden
 rond de auto (1500x844). **Licentie gecontroleerd bij de bron op 2026-08-01:** de
