@@ -446,7 +446,18 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   transition: transform 0.2s;
 }
 .wa-knop:hover { transform: scale(1.08); }
-.wa-knop svg { width: 30px; height: 30px; fill: #fff; }
+.wa-knop svg { width: 30px; height: 30px; fill: #fff; position: relative; z-index: 1; }
+/* Rustige pulsring, zelfde gebaar als de knop op de YESFIT-site. */
+.wa-knop::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(67, 128, 193, 0.45);
+  animation: waPuls 2.6s ease-out infinite;
+}
+@keyframes waPuls {
+  0% { box-shadow: 0 0 0 0 rgba(67, 128, 193, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(67, 128, 193, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(67, 128, 193, 0); }
+}
 
 /* Scroll-reveal */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -456,6 +467,7 @@ footer { border-top: 1px solid var(--border); padding: 44px 0 110px; background:
   .tape-inner { animation: none; }
   .druppel { animation: none; opacity: 0; }
   .reveal { opacity: 1; transform: none; transition: none; }
+  .wa-knop::after { animation: none; }
   html { scroll-behavior: auto; }
 }
 
