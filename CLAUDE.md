@@ -23,6 +23,11 @@ Anton/Inter/JetBrains Mono, tape-strips, mono-labels) met de ECHTE YesCarwash-kl
 **logo-blauw `#4380c1`** (gemeten uit `assets/logo-yescarwash.png`), met `#6aa5e3` als
 lichtere actiekleur voor knoppen.
 
+**GEEN WHATSAPP-GROEN (eigenaar-eis 2026-08-27).** De zwevende WhatsApp-knop staat in
+`var(--accent)` (het logo-blauw) met een pulsring van 2,6 seconden, hetzelfde gebaar als de
+knop op de YESFIT-site. Het oorspronkelijke `#25d366` vloekte met het blauw. De ring staat uit
+bij `prefers-reduced-motion`. Zet dat groen niet terug.
+
 **GEEN ORANJE (eigenaar-eis 2026-08-02, geverifieerd bij de bron).** Eerdere versies
 gebruikten `#fc5404` als actiekleur "omdat dat de Elementor-kit-primary van
 yescarwash.nl is". Dat klopt technisch maar is misleidend: die kleur staat alleen in de
